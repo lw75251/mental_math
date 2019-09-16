@@ -1,0 +1,38 @@
+// import 'package:flutter/material.dart';
+// import 'package:friendly/routes/undefined_view.dart';
+// import 'package:friendly/ui/gradients.dart';
+// import 'package:friendly/ui/login/landing.dart';
+// import 'package:friendly/ui/login/slides.dart';
+
+// const String LandingScreenRoute = '/';
+// const String SignUpRoute = 'signup';
+
+// class Router {
+  
+
+//   static Route<dynamic> generateRoute(RouteSettings settings) {
+//     switch (settings.name) {
+//       case LandingScreenRoute:
+//         return MaterialPageRoute(builder: (_) => LandingScreen());
+//       case SignUpRoute:
+//         return MaterialPageRoute(builder: (context) => FriendlySwiper());
+//       default:
+//         return MaterialPageRoute(builder: (context) => UndefinedView(name: settings.name,));
+//     }
+//   }
+// }
+
+import 'package:fluro/fluro.dart';
+import 'package:mental_math/routes/route_handlers.dart';
+
+
+const String welcomeRoute = '/';
+const String signUpRoute = '/signup';
+
+final router = Router();
+
+class Routes {
+  static void defineRoutes(Router router) {
+    router.define(welcomeRoute, handler: welcomeHandler, transitionType: TransitionType.fadeIn);
+  }
+}
