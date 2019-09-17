@@ -44,33 +44,35 @@ class _BottomNavigationDotBarState extends State<BottomNavigationDotBar>{
   }
 
   @override
-  Widget build(BuildContext context) => Container (
-    padding: EdgeInsets.all(widget.padding),
-    child: Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          child: Stack(
-            key: _keyBottomBar,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 12),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: _createNavigationIconButtonList(widget.items.asMap())
+  Widget build(BuildContext context) => Align( alignment: FractionalOffset.bottomCenter,
+    child: Container (
+      padding: EdgeInsets.all(widget.padding),
+      child: Material(
+          elevation: 5,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 15),
+            child: Stack(
+              key: _keyBottomBar,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 12),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: _createNavigationIconButtonList(widget.items.asMap())
+                  ),
                 ),
-              ),
-              AnimatedPositioned(
-                  child: CircleAvatar(radius: 2.5, backgroundColor: _activeColor),
-                  duration: Duration(milliseconds: 400),
-                  curve: Curves.fastOutSlowIn,
-                  left: _positionLeftIndicatorDot,
-                  bottom: 0
-              ),
-            ],
-          ),
-        )
+                AnimatedPositioned(
+                    child: CircleAvatar(radius: 2.5, backgroundColor: _activeColor),
+                    duration: Duration(milliseconds: 400),
+                    curve: Curves.fastOutSlowIn,
+                    left: _positionLeftIndicatorDot,
+                    bottom: 0
+                ),
+              ],
+            ),
+          )
+      )
     ),
   );
 

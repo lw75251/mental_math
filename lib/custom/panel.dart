@@ -31,6 +31,10 @@ class SlidingUpPanel extends StatefulWidget {
   /// This fades out as the panel is opened.
   final Widget collapsed;
 
+  /// The Navigation Widget displayed overtop the [panel]
+  /// This will slide out as the panel closes
+  final Widget bottomNavigationBar;
+
   /// The Widget that lies underneath the sliding panel.
   /// This Widget automatically sizes itself
   /// to fill the screen.
@@ -47,6 +51,9 @@ class SlidingUpPanel extends StatefulWidget {
 
   /// If non-null, the corners of the sliding panel sheet are rounded by this [BorderRadiusGeometry].
   final BorderRadiusGeometry borderRadius;
+
+  /// The end curved value of panel widget
+  final double radius;
 
   /// A list of shadows cast behind the sliding panel sheet.
   final List<BoxShadow> boxShadow;
@@ -136,10 +143,12 @@ class SlidingUpPanel extends StatefulWidget {
     @required this.panel,
     this.body,
     this.collapsed,
+    this.bottomNavigationBar,
     this.minHeight = 100.0,
     this.maxHeight = 500.0,
     this.border,
     this.borderRadius,
+    this.radius = 10.0,
     this.boxShadow = const <BoxShadow>[
       BoxShadow(
         blurRadius: 8.0,
@@ -174,6 +183,8 @@ class SlidingUpPanel extends StatefulWidget {
 class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProviderStateMixin{
 
   AnimationController _ac;
+  double _radius = 0;
+  Animation<BorderRadius> _borderRadius;
 
   bool _isPanelVisible = true;
 
@@ -192,6 +203,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
       if(widget.onPanelOpened != null && _ac.value == 1.0) widget.onPanelOpened();
 
       if(widget.onPanelClosed != null && _ac.value == 0.0) widget.onPanelClosed();
+
     });
 
     widget.controller?._addListeners(
@@ -211,6 +223,15 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
     //set the default panel state
     if(widget.defaultPanelState == PanelState.CLOSED) _ac.value = 0.0;
     else if (widget.defaultPanelState == PanelState.OPEN) _ac.value = 1.0;
+
+    _borderRadius = BorderRadiusTween(
+      begin: BorderRadius.only(),
+      end: BorderRadius.only(
+        topLeft: Radius.circular(widget.radius),
+        topRight: Radius.circular(widget.radius)
+      )
+    ).animate(_ac);
+
   }
 
   @override
@@ -259,7 +280,10 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
             padding: widget.padding,
             decoration: widget.renderPanelSheet ? BoxDecoration(
               border: widget.border,
-              borderRadius: widget.borderRadius,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular((1.0-_ac.value)*50),
+                topRight: Radius.circular((1.0-_ac.value)*50)
+              ),
               boxShadow: widget.boxShadow,
               color: widget.color,
             ) : null,
@@ -275,31 +299,42 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
                           (widget.padding != null ? widget.padding.horizontal : 0),
                   child: Container(
                     height: widget.maxHeight,
+                    decoration: BoxDecoration(
+                      border: widget.border,
+                      borderRadius: BorderRadius.only(
+                topLeft: Radius.circular((1.0-_ac.value)*50),
+                topRight: Radius.circular((1.0-_ac.value)*50)
+              ),
+                      boxShadow: widget.boxShadow,
+                      color: widget.color
+                    ),
                     child: widget.panel,
                   )
                 ),
 
-                // collapsed panel
-                Positioned(
-                  top: widget.slideDirection == SlideDirection.UP ? 0.0 : null,
-                  bottom: widget.slideDirection == SlideDirection.DOWN ? 0.0 : null,
-                  width:  MediaQuery.of(context).size.width -
-                          (widget.margin != null ? widget.margin.horizontal : 0) -
-                          (widget.padding != null ? widget.padding.horizontal : 0),
-                  child: Container(
-                    height: widget.minHeight,
-                    child: Opacity(
-                      opacity: 1.0 - _ac.value,
+                // widget.bottomNavigationBar ?? Container(),
 
-                      // if the panel is open ignore pointers (touch events) on the collapsed
-                      // child so that way touch events go through to whatever is underneath
-                      child: IgnorePointer(
-                        ignoring: _isPanelOpen(),
-                        child: widget.collapsed ?? Container(),
-                      ),
-                    ),
-                  ),
-                ),
+                // collapsed panel
+                // Positioned(
+                //   top: widget.slideDirection == SlideDirection.UP ? 0.0 : null,
+                //   bottom: widget.slideDirection == SlideDirection.DOWN ? 0.0 : null,
+                //   width:  MediaQuery.of(context).size.width -
+                //           (widget.margin != null ? widget.margin.horizontal : 0) -
+                //           (widget.padding != null ? widget.padding.horizontal : 0),
+                //   child: Container(
+                //     height: widget.minHeight,
+                //     child: Opacity(
+                //       opacity: 1.0 - _ac.value,
+
+                //       // if the panel is open ignore pointers (touch events) on the collapsed
+                //       // child so that way touch events go through to whatever is underneath
+                //       child: IgnorePointer(
+                //         ignoring: _isPanelOpen(),
+                //         child: widget.collapsed ?? Container(),
+                //       ),
+                //     ),
+                //   ),
+                // ),
 
 
               ],

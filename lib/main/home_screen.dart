@@ -13,8 +13,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int _selectedIndex = 0;
   BorderRadiusGeometry radius = BorderRadius.only(
-    topLeft: Radius.circular(35.0), 
-    topRight: Radius.circular(35.0)
+    topLeft: Radius.circular(50), 
+    topRight: Radius.circular(50)
   );
 
   static const TextStyle optionStyle =
@@ -29,99 +29,143 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: SlidingUpPanel(
-        maxHeight: MediaQuery.of(context).size.height,
-        panel: Scaffold(
-          body: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(color: Color(0xFFEEE)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+      child: Stack(
+        children: <Widget>[
+          SlidingUpPanel(
+            maxHeight: MediaQuery.of(context).size.height,
+            panel: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(color: Color(0xFFEEE)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(color: Colors.red),
-                    ),
-                    flex: 6,
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(color: Colors.green),
-                    ),
-                    flex: 2,
+                  // Expanded(
+                  //   child: Container(decoration: const BoxDecoration(color: Colors.red),),
+                  //   flex: 6,
+                  // ),
+                  // Expanded(
+                  //   child: Container(decoration: const BoxDecoration(color: Colors.green)),
+                  //   flex: 2,
+                  // )
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+
                   )
                 ],
-            )
-          ),
-          bottomNavigationBar: BottomNavigationDotBar(
-            padding: 10,
-            items: [
-              BottomNavigationDotBarItem(
-                icon: FontAwesomeIcons.brain,
-                onTap: () {
-                  _onItemTapped(0);
-                }
+              )
+            ),
+            collapsed: Container(
+                decoration: BoxDecoration(
+                color: Colors.blueGrey,
+                borderRadius: radius
               ),
-              BottomNavigationDotBarItem(
-                icon: FontAwesomeIcons.chartBar,
-                onTap: () {
-                  _onItemTapped(1);
-                }
+              child: Center(
+                child: Text(
+                  "This is the collapsed Widget",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              BottomNavigationDotBarItem(
-                icon: FontAwesomeIcons.user,
-                onTap: () {
-                  _onItemTapped(2);
-                }
+            ),
+            body: Center(
+                child: Text("This is the Widget behind the sliding panel"),
               ),
-            ],
-          ),
-        ),
-        collapsed: Container(
-          decoration: BoxDecoration(
-            color: Colors.blueGrey,
-            borderRadius: radius
-          ),
-          child: Center(
-            child: Text(
-              "This is the collapsed Widget",
-              style: TextStyle(color: Colors.white),
+            borderRadius: radius,
+            bottomNavigationBar: BottomNavigationDotBar(
+              padding: 10,
+              items: [
+                BottomNavigationDotBarItem(
+                  icon: FontAwesomeIcons.brain,
+                  onTap: () {
+                    _onItemTapped(0);
+                  }
+                ),
+                BottomNavigationDotBarItem(
+                  icon: FontAwesomeIcons.chartBar,
+                  onTap: () {
+                    _onItemTapped(1);
+                  }
+                ),
+                BottomNavigationDotBarItem(
+                  icon: FontAwesomeIcons.user,
+                  onTap: () {
+                    _onItemTapped(2);
+                  }
+                ),
+              ],
             ),
           ),
-        ),
-        body: Center(
-          child: Text("This is the Widget behind the sliding panel"),
-        ),
-        borderRadius: radius,
+        ],
       ),
     );
 
-    // return Scaffold(
-    //   bottomNavigationBar: BottomNavigationDotBar(
-    //     padding: 10,
-    //     items: [
-    //       BottomNavigationDotBarItem(
-    //         icon: FontAwesomeIcons.brain,
-    //         onTap: () {
-    //           _onItemTapped(0);
-    //         }
+    // return Material(
+    //   child: SlidingUpPanel(
+    //     maxHeight: MediaQuery.of(context).size.height,
+    //     panel: Scaffold(
+    //       body: Container(
+    //         width: MediaQuery.of(context).size.width,
+    //         decoration: BoxDecoration(color: Color(0xFFEEE)),
+    //         child: Row(
+    //           mainAxisAlignment: MainAxisAlignment.end,
+    //             children: <Widget>[
+    //               Expanded(
+    //                 child: Container(
+    //                   decoration: const BoxDecoration(color: Colors.red),
+    //                 ),
+    //                 flex: 6,
+    //               ),
+    //               Expanded(
+    //                 child: Container(
+    //                   decoration: const BoxDecoration(color: Colors.green),
+    //                 ),
+    //                 flex: 2,
+    //               )
+    //             ],
+    //         )
     //       ),
-    //       BottomNavigationDotBarItem(
-    //         icon: FontAwesomeIcons.chartBar,
-    //         onTap: () {
-    //           _onItemTapped(1);
-    //         }
+    //       bottomNavigationBar: BottomNavigationDotBar(
+    //         padding: 10,
+    //         items: [
+    //           BottomNavigationDotBarItem(
+    //             icon: FontAwesomeIcons.brain,
+    //             onTap: () {
+    //               _onItemTapped(0);
+    //             }
+    //           ),
+    //           BottomNavigationDotBarItem(
+    //             icon: FontAwesomeIcons.chartBar,
+    //             onTap: () {
+    //               _onItemTapped(1);
+    //             }
+    //           ),
+    //           BottomNavigationDotBarItem(
+    //             icon: FontAwesomeIcons.user,
+    //             onTap: () {
+    //               _onItemTapped(2);
+    //             }
+    //           ),
+    //         ],
     //       ),
-    //       BottomNavigationDotBarItem(
-    //         icon: FontAwesomeIcons.user,
-    //         onTap: () {
-    //           _onItemTapped(2);
-    //         }
+    //     ),
+    //     collapsed: Container(
+    //       decoration: BoxDecoration(
+    //         color: Colors.blueGrey,
+    //         borderRadius: radius
     //       ),
-    //     ],
+    //       child: Center(
+    //         child: Text(
+    //           "This is the collapsed Widget",
+    //           style: TextStyle(color: Colors.white),
+    //         ),
+    //       ),
+    //     ),
+    //     body: Center(
+    //       child: Text("This is the Widget behind the sliding panel"),
+    //     ),
+    //     borderRadius: radius,
     //   ),
     // );
   }
-
-
 }
