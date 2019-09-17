@@ -33,6 +33,6 @@ final router = Router();
 
 class Routes {
   static void defineRoutes(Router router) {
-    router.define(welcomeRoute, handler: welcomeHandler, transitionType: TransitionType.fadeIn);
+    router.define(welcomeRoute, handler: mainHandler, transitionType: TransitionType.fadeIn);
   }
 }
