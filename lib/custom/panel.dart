@@ -7,7 +7,6 @@ Licensing: More information can be found here: https://github.com/akshathjain/sl
 */
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum SlideDirection{
   UP,
@@ -193,7 +192,6 @@ class SlidingUpPanel extends StatefulWidget {
 class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProviderStateMixin{
 
   AnimationController _ac;
-
   bool _isPanelVisible = true;
 
   @override
@@ -310,17 +308,28 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
                           child: Container(
                             child: Center(
                               child: Column(children: <Widget>[
-                                Stack(children: <Widget>[
-                                  
-                                  Opacity(
-                                    opacity: _ac.value,
-                                    child: _buildSideBarItem(FontAwesomeIcons.slidersH, Colors.black, (){}),
+                                Padding(
+                                  padding: EdgeInsets.all(30.0),
+                                  child: IconButton( 
+                                    icon: AnimatedIcon(icon: AnimatedIcons.close_menu, progress: _ac,),
+                                    onPressed:() {
+                                      if( _isPanelOpen() ) {
+                                        _animatePanelToPosition(0.0);
+                                      } else {
+                                        _animatePanelToPosition(1.0);
+                                      }
+                                    },
+                                ))
+                                // Stack(children: <Widget>[
+                                //   Opacity(
+                                //     opacity: _ac.value,
+                                //     child: _buildSideBarItem(FontAwesomeIcons.slidersH, Colors.black, (){}),
 
-                                  ),
-                                  Opacity(opacity: 1-_ac.value,
-                                    child: _buildSideBarItem(FontAwesomeIcons.times, Colors.black, (){})
-                                  )
-                                ],)
+                                //   ),
+                                //   Opacity(opacity: 1-_ac.value,
+                                //     child: _buildSideBarItem(FontAwesomeIcons.times, Colors.black, (){})
+                                //   )
+                                // ],)
                               ],),
                             ),
                             decoration: BoxDecoration(color: widget.sideBarColor),
@@ -336,7 +345,12 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
                   )
                 ),
 
-                // widget.bottomNavigationBar ?? Container(),
+                SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 0.8), 
+                    end: const Offset(0, 0)).animate(_ac),
+                  child: widget.bottomNavigationBar
+                ) ?? Container(),
 
                 // collapsed panel
                 // Positioned(
@@ -370,15 +384,15 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
     );
   }
 
-  Widget _buildSideBarItem(IconData icon, Color color, Function onTap) {
-    return Padding(padding: EdgeInsets.symmetric(vertical: 30.0),
-      child: IconButton(
-        icon: Icon(icon), 
-        color: color,
-        onPressed: onTap,
-      )
-    );
-  }
+  // Widget _buildSideBarItem(IconData icon, Color color, Function onTap) {
+  //   return Padding(padding: EdgeInsets.symmetric(vertical: 30.0),
+  //     child: IconButton(
+  //       icon: Icon(icon), 
+  //       color: color,
+  //       onPressed: onTap,
+  //     )
+  //   );
+  // }
 
   @override
   void dispose(){
@@ -482,7 +496,10 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
   //be between 0.0 and 1.0
   void _animatePanelToPosition(double value){
     assert(0.0 <= value && value <= 1.0);
-    _ac.animateTo(value);
+    _ac.animateTo(value,
+      duration: Duration(milliseconds: 600),
+      curve: Curves.easeIn
+    );
   }
 
   //get the current panel position
@@ -637,40 +654,3 @@ class PanelController{
   }
 
 }
-
-
-typedef NavigationIconButtonTapCallback = void Function();
-
-class SideNavigationBarItem {
-  final IconData icon;
-  final Color iconColor;
-  final IconData transformIcon;
-  final bool transform;
-  final NavigationIconButtonTapCallback onTap;
-
-  const SideNavigationBarItem({
-    @required this.icon,
-    this.iconColor,
-    this.transformIcon,
-    this.transform,
-    this.onTap
-  });
-}
-
-// class _NavigationIconButton extends StatefulWidget {
-
-//   final IconData _icon;
-//   final Color _colorIcon;
-//   final NavigationIconButtonTapCallback _onTapInternalButton;
-
-//   const _NavigationIconButton(
-//     this._icon, 
-//     this._colorIcon, 
-//     this._onTapInternalButton, 
-//     {Key key})
-//     : super(key: key);
-
-//   @override
-//   _NavigationIconButtonState createState() => _NavigationIconButtonState();
-
-// }
