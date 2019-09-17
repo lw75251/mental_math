@@ -7,6 +7,7 @@ Licensing: More information can be found here: https://github.com/akshathjain/sl
 */
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum SlideDirection{
   UP,
@@ -34,6 +35,13 @@ class SlidingUpPanel extends StatefulWidget {
   /// The Navigation Widget displayed overtop the [panel]
   /// This will slide out as the panel closes
   final Widget bottomNavigationBar;
+
+  /// The Widget that lies on the right side of the panel.
+  /// This will transform when the panel closes
+  final Widget sideBar;
+
+  /// The background color of sidebar
+  final Color sideBarColor; 
 
   /// The Widget that lies underneath the sliding panel.
   /// This Widget automatically sizes itself
@@ -144,6 +152,8 @@ class SlidingUpPanel extends StatefulWidget {
     this.body,
     this.collapsed,
     this.bottomNavigationBar,
+    this.sideBar,
+    this.sideBarColor,
     this.minHeight = 100.0,
     this.maxHeight = 500.0,
     this.border,
@@ -183,8 +193,6 @@ class SlidingUpPanel extends StatefulWidget {
 class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProviderStateMixin{
 
   AnimationController _ac;
-  double _radius = 0;
-  Animation<BorderRadius> _borderRadius;
 
   bool _isPanelVisible = true;
 
@@ -223,14 +231,6 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
     //set the default panel state
     if(widget.defaultPanelState == PanelState.CLOSED) _ac.value = 0.0;
     else if (widget.defaultPanelState == PanelState.OPEN) _ac.value = 1.0;
-
-    _borderRadius = BorderRadiusTween(
-      begin: BorderRadius.only(),
-      end: BorderRadius.only(
-        topLeft: Radius.circular(widget.radius),
-        topRight: Radius.circular(widget.radius)
-      )
-    ).animate(_ac);
 
   }
 
@@ -297,18 +297,42 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
                   width:  MediaQuery.of(context).size.width -
                           (widget.margin != null ? widget.margin.horizontal : 0) -
                           (widget.padding != null ? widget.padding.horizontal : 0),
-                  child: Container(
-                    height: widget.maxHeight,
-                    decoration: BoxDecoration(
-                      border: widget.border,
-                      borderRadius: BorderRadius.only(
-                topLeft: Radius.circular((1.0-_ac.value)*50),
-                topRight: Radius.circular((1.0-_ac.value)*50)
-              ),
-                      boxShadow: widget.boxShadow,
-                      color: widget.color
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular((1.0-_ac.value)*25),
+                      topRight: Radius.circular((1.0-_ac.value)*25)
                     ),
-                    child: widget.panel,
+                    child: Container(
+                      height: widget.maxHeight,
+                      child: Row(children: <Widget>[
+                        Expanded(child: widget.panel, flex: 6),
+                        Expanded(
+                          child: Container(
+                            child: Center(
+                              child: Column(children: <Widget>[
+                                Stack(children: <Widget>[
+                                  
+                                  Opacity(
+                                    opacity: _ac.value,
+                                    child: _buildSideBarItem(FontAwesomeIcons.slidersH, Colors.black, (){}),
+
+                                  ),
+                                  Opacity(opacity: 1-_ac.value,
+                                    child: _buildSideBarItem(FontAwesomeIcons.times, Colors.black, (){})
+                                  )
+                                ],)
+                              ],),
+                            ),
+                            decoration: BoxDecoration(color: widget.sideBarColor),
+                          ), 
+                          flex: 2)
+                      ]),
+                      decoration: BoxDecoration(
+                        border: widget.border,
+                        boxShadow: widget.boxShadow,
+                        color: widget.color
+                      ),
+                    )
                   )
                 ),
 
@@ -343,6 +367,16 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
         ),
 
       ],
+    );
+  }
+
+  Widget _buildSideBarItem(IconData icon, Color color, Function onTap) {
+    return Padding(padding: EdgeInsets.symmetric(vertical: 30.0),
+      child: IconButton(
+        icon: Icon(icon), 
+        color: color,
+        onPressed: onTap,
+      )
     );
   }
 
@@ -603,3 +637,40 @@ class PanelController{
   }
 
 }
+
+
+typedef NavigationIconButtonTapCallback = void Function();
+
+class SideNavigationBarItem {
+  final IconData icon;
+  final Color iconColor;
+  final IconData transformIcon;
+  final bool transform;
+  final NavigationIconButtonTapCallback onTap;
+
+  const SideNavigationBarItem({
+    @required this.icon,
+    this.iconColor,
+    this.transformIcon,
+    this.transform,
+    this.onTap
+  });
+}
+
+// class _NavigationIconButton extends StatefulWidget {
+
+//   final IconData _icon;
+//   final Color _colorIcon;
+//   final NavigationIconButtonTapCallback _onTapInternalButton;
+
+//   const _NavigationIconButton(
+//     this._icon, 
+//     this._colorIcon, 
+//     this._onTapInternalButton, 
+//     {Key key})
+//     : super(key: key);
+
+//   @override
+//   _NavigationIconButtonState createState() => _NavigationIconButtonState();
+
+// }

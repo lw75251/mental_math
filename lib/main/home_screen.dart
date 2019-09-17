@@ -33,41 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
         children: <Widget>[
           SlidingUpPanel(
             maxHeight: MediaQuery.of(context).size.height,
-            panel: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(color: Color(0xFFEEE)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  // Expanded(
-                  //   child: Container(decoration: const BoxDecoration(color: Colors.red),),
-                  //   flex: 6,
-                  // ),
-                  // Expanded(
-                  //   child: Container(decoration: const BoxDecoration(color: Colors.green)),
-                  //   flex: 2,
-                  // )
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-
-                  )
-                ],
-              )
-            ),
-            collapsed: Container(
-                decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: radius
-              ),
-              child: Center(
-                child: Text(
-                  "This is the collapsed Widget",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
+            sideBarColor: Color(0xFFEAEEF9),
+            panel: Container(decoration: const BoxDecoration(color: Color(0XFFF2F7FB))),
             body: Center(
                 child: Text("This is the Widget behind the sliding panel"),
               ),
@@ -99,73 +66,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-
-    // return Material(
-    //   child: SlidingUpPanel(
-    //     maxHeight: MediaQuery.of(context).size.height,
-    //     panel: Scaffold(
-    //       body: Container(
-    //         width: MediaQuery.of(context).size.width,
-    //         decoration: BoxDecoration(color: Color(0xFFEEE)),
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.end,
-    //             children: <Widget>[
-    //               Expanded(
-    //                 child: Container(
-    //                   decoration: const BoxDecoration(color: Colors.red),
-    //                 ),
-    //                 flex: 6,
-    //               ),
-    //               Expanded(
-    //                 child: Container(
-    //                   decoration: const BoxDecoration(color: Colors.green),
-    //                 ),
-    //                 flex: 2,
-    //               )
-    //             ],
-    //         )
-    //       ),
-    //       bottomNavigationBar: BottomNavigationDotBar(
-    //         padding: 10,
-    //         items: [
-    //           BottomNavigationDotBarItem(
-    //             icon: FontAwesomeIcons.brain,
-    //             onTap: () {
-    //               _onItemTapped(0);
-    //             }
-    //           ),
-    //           BottomNavigationDotBarItem(
-    //             icon: FontAwesomeIcons.chartBar,
-    //             onTap: () {
-    //               _onItemTapped(1);
-    //             }
-    //           ),
-    //           BottomNavigationDotBarItem(
-    //             icon: FontAwesomeIcons.user,
-    //             onTap: () {
-    //               _onItemTapped(2);
-    //             }
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //     collapsed: Container(
-    //       decoration: BoxDecoration(
-    //         color: Colors.blueGrey,
-    //         borderRadius: radius
-    //       ),
-    //       child: Center(
-    //         child: Text(
-    //           "This is the collapsed Widget",
-    //           style: TextStyle(color: Colors.white),
-    //         ),
-    //       ),
-    //     ),
-    //     body: Center(
-    //       child: Text("This is the Widget behind the sliding panel"),
-    //     ),
-    //     borderRadius: radius,
-    //   ),
-    // );
   }
 }
