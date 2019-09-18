@@ -7,6 +7,7 @@ Licensing: More information can be found here: https://github.com/akshathjain/sl
 */
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum SlideDirection{
   UP,
@@ -311,7 +312,8 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
                                 Padding(
                                   padding: EdgeInsets.all(30.0),
                                   child: IconButton( 
-                                    icon: AnimatedIcon(icon: AnimatedIcons.close_menu, progress: _ac,),
+                                    icon: AnimatedIcon( size: 25,
+                                      icon: AnimatedIcons.close_menu, progress: _ac,),
                                     onPressed:() {
                                       if( _isPanelOpen() ) {
                                         _animatePanelToPosition(0.0);
@@ -319,7 +321,23 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
                                         _animatePanelToPosition(1.0);
                                       }
                                     },
-                                ))
+                                )),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 30.0),
+                                  child: Container(
+                                    height: 70,
+                                    width: 70,
+                                    child: PageView(
+                                      children: <Widget>[
+                                        Icon(FontAwesomeIcons.plus, color: Colors.black, size: 20),
+                                        Icon(FontAwesomeIcons.minus, color: Colors.black, size: 20),
+                                        Icon(FontAwesomeIcons.times, color: Colors.black, size: 20),
+                                        Icon(FontAwesomeIcons.divide, color: Colors.black, size: 20),
+                                        Icon(FontAwesomeIcons.question, color: Colors.black, size: 20),
+                                      ],
+                                    ),
+                                  )
+                                ),
                                 // Stack(children: <Widget>[
                                 //   Opacity(
                                 //     opacity: _ac.value,
