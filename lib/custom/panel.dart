@@ -132,7 +132,7 @@ class SlidingUpPanel extends StatefulWidget {
   /// Allows toggling of the draggability of the SlidingUpPanel.
   /// Set this to false to prevent the user from being able to drag
   /// the panel up and down. Defaults to true.
-  final bool isDraggable;
+  // final bool isDraggable;
 
   /// Either SlideDirection.UP or SlideDirection.DOWN. Indicates which way
   /// the panel should slide. Defaults to UP. If set to DOWN, the panel attaches
@@ -180,7 +180,7 @@ class SlidingUpPanel extends StatefulWidget {
     this.onPanelClosed,
     this.parallaxEnabled = false,
     this.parallaxOffset = 0.1,
-    this.isDraggable = true,
+    // this.isDraggable = true,
     this.slideDirection = SlideDirection.UP,
     this.defaultPanelState = PanelState.CLOSED
   }) : assert(0 <= backdropOpacity && backdropOpacity <= 1.0),
@@ -194,6 +194,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
 
   AnimationController _ac;
   bool _isPanelVisible = true;
+  bool _isDraggable = false;
 
   @override
   void initState(){
@@ -271,8 +272,10 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
 
         //the actual sliding part
         !_isPanelVisible ? Container() : GestureDetector(
-          onVerticalDragUpdate: widget.isDraggable ? _onDrag : null,
-          onVerticalDragEnd: widget.isDraggable ? _onDragEnd : null,
+          // onVerticalDragUpdate: widget.isDraggable ? _onDrag : null,
+          // onVerticalDragEnd: widget.isDraggable ? _onDragEnd : null,
+          onVerticalDragUpdate: _isDraggable ? _onDrag : null,
+          onVerticalDragEnd: _isDraggable ? _onDragEnd : null,
           child: Container(
             height: _ac.value * (widget.maxHeight - widget.minHeight) + widget.minHeight,
             margin: widget.margin,
@@ -322,22 +325,11 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
                                       }
                                     },
                                 )),
-                                Padding(
-                                  padding: EdgeInsets.only(bottom: 30.0),
-                                  child: Container(
-                                    height: 70,
-                                    width: 70,
-                                    child: PageView(
-                                      children: <Widget>[
-                                        Icon(FontAwesomeIcons.plus, color: Colors.black, size: 20),
-                                        Icon(FontAwesomeIcons.minus, color: Colors.black, size: 20),
-                                        Icon(FontAwesomeIcons.times, color: Colors.black, size: 20),
-                                        Icon(FontAwesomeIcons.divide, color: Colors.black, size: 20),
-                                        Icon(FontAwesomeIcons.question, color: Colors.black, size: 20),
-                                      ],
-                                    ),
-                                  )
-                                ),
+                                _buildSideBarItem(FontAwesomeIcons.plus, Colors.black, (){}),
+                                _buildSideBarItem(FontAwesomeIcons.minus, Colors.black, (){}),
+                                _buildSideBarItem(FontAwesomeIcons.times, Colors.black, (){}),
+                                _buildSideBarItem(FontAwesomeIcons.divide, Colors.black, (){}),
+                                _buildSideBarItem(FontAwesomeIcons.question, Colors.black, (){})
                                 // Stack(children: <Widget>[
                                 //   Opacity(
                                 //     opacity: _ac.value,
@@ -402,15 +394,16 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
     );
   }
 
-  // Widget _buildSideBarItem(IconData icon, Color color, Function onTap) {
-  //   return Padding(padding: EdgeInsets.symmetric(vertical: 30.0),
-  //     child: IconButton(
-  //       icon: Icon(icon), 
-  //       color: color,
-  //       onPressed: onTap,
-  //     )
-  //   );
-  // }
+  Widget _buildSideBarItem(IconData icon, Color color, Function onTap) {
+    return Padding(padding: EdgeInsets.symmetric(vertical: 30.0),
+      child: IconButton(
+        iconSize: 15,
+        icon: Icon(icon), 
+        color: color,
+        onPressed: onTap,
+      )
+    );
+  }
 
   @override
   void dispose(){
@@ -456,6 +449,16 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
         );
       }
 
+      if ( _isPanelClosed() ) {
+        setState(() {
+          _isDraggable = true;
+        });
+      } else {
+        setState(() {
+         _isDraggable = false; 
+        });
+      }
+
       return;
     }
 
@@ -477,12 +480,20 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
 
   //close the panel
   void _close(){
-    _ac.fling(velocity: -1.0);
+    _ac.fling(velocity: -1.0).then((x){
+      setState(() {
+       _isDraggable = true; 
+      });
+    });
   }
 
   //open the panel
   void _open(){
-    _ac.fling(velocity: 1.0);
+    _ac.fling(velocity: 1.0).then((x){
+      setState(() {
+       _isDraggable = false; 
+      });
+    });
   }
 
   //hide the panel (completely offscreen)
@@ -517,7 +528,11 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
     _ac.animateTo(value,
       duration: Duration(milliseconds: 600),
       curve: Curves.easeIn
-    );
+    ).then((x){
+      setState((){
+        value == 0 ? _isDraggable = true : _isDraggable = false;
+      });
+    });
   }
 
   //get the current panel position

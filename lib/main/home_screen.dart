@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mental_math/custom/bottom_nav_bar_dot.dart';
 import 'package:mental_math/custom/panel.dart';
+import 'package:mental_math/main/game_settings.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -32,12 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Stack(
         children: <Widget>[
           SlidingUpPanel(
+            // isDraggable: false,
             maxHeight: MediaQuery.of(context).size.height,
             sideBarColor: Color(0xFFEAEEF9),
             panel: Container(decoration: const BoxDecoration(color: Color(0XFFF2F7FB))),
-            body: Center(
-                child: Text("This is the Widget behind the sliding panel"),
-              ),
+            body: GameSettingScreen(),
             borderRadius: radius,
             bottomNavigationBar: BottomNavigationDotBar(
               padding: 10,
