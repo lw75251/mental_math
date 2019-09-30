@@ -36,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
             // isDraggable: false,
             maxHeight: MediaQuery.of(context).size.height,
             sideBarColor: Color(0xFFEAEEF9),
-            panel: Container(decoration: const BoxDecoration(color: Color(0XFFF2F7FB))),
+            panel: Container(decoration: const BoxDecoration(color: Color(0XFFF2F7FB))
+            
+            
+            ),
             body: GameSettingScreen(),
             borderRadius: radius,
             bottomNavigationBar: BottomNavigationDotBar(

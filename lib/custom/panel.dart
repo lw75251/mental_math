@@ -8,6 +8,7 @@ Licensing: More information can be found here: https://github.com/akshathjain/sl
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mental_math/custom/animated_slides.dart';
 
 enum SlideDirection{
   UP,
@@ -195,6 +196,8 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
   AnimationController _ac;
   bool _isPanelVisible = true;
   bool _isDraggable = false;
+  List<IconData> list = [FontAwesomeIcons.plus, FontAwesomeIcons.minus, FontAwesomeIcons.times, FontAwesomeIcons.divide, FontAwesomeIcons.question];
+
 
   @override
   void initState(){
@@ -307,50 +310,40 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
                     child: Container(
                       height: widget.maxHeight,
                       child: Row(children: <Widget>[
-                        Expanded(child: widget.panel, flex: 6),
-                        Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Column(children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.all(30.0),
-                                  child: IconButton( 
-                                    icon: AnimatedIcon( size: 25,
-                                      icon: AnimatedIcons.close_menu, progress: _ac,),
-                                    onPressed:() {
-                                      if( _isPanelOpen() ) {
-                                        _animatePanelToPosition(0.0);
-                                      } else {
-                                        _animatePanelToPosition(1.0);
-                                      }
-                                    },
-                                )),
-                                _buildSideBarItem(FontAwesomeIcons.plus, Colors.black, (){}),
-                                _buildSideBarItem(FontAwesomeIcons.minus, Colors.black, (){}),
-                                _buildSideBarItem(FontAwesomeIcons.times, Colors.black, (){}),
-                                _buildSideBarItem(FontAwesomeIcons.divide, Colors.black, (){}),
-                                _buildSideBarItem(FontAwesomeIcons.question, Colors.black, (){})
-                                // Stack(children: <Widget>[
-                                //   Opacity(
-                                //     opacity: _ac.value,
-                                //     child: _buildSideBarItem(FontAwesomeIcons.slidersH, Colors.black, (){}),
+                            Expanded(child: Container(decoration: const BoxDecoration(color: Color(0XFFF2F7FB))), flex: 6),
+                            Expanded(flex: 2, child: Container(
+                              child: Center(
+                                child: Column(children: <Widget>[
+                                    Padding( padding: EdgeInsets.all(30.0),
+                                      child: IconButton(icon: AnimatedIcon(size: 25, icon: AnimatedIcons.close_menu, progress: _ac,),
+                                        onPressed:() {
+                                          if( _isPanelOpen() ) {
+                                            _animatePanelToPosition(0.0);
+                                          } else {
+                                            _animatePanelToPosition(1.0);
+                                          }
+                                        },
+                                    )),
+                                    // _buildSideBarItem(FontAwesomeIcons.plus, Colors.black, (){}),
+                                    // _buildSideBarItem(FontAwesomeIcons.minus, Colors.black, (){}),
+                                    // _buildSideBarItem(FontAwesomeIcons.times, Colors.black, (){}),
+                                    // _buildSideBarItem(FontAwesomeIcons.divide, Colors.black, (){}),
+                                    // _buildSideBarItem(FontAwesomeIcons.question, Colors.black, (){})
 
-                                //   ),
-                                //   Opacity(opacity: 1-_ac.value,
-                                //     child: _buildSideBarItem(FontAwesomeIcons.times, Colors.black, (){})
-                                //   )
-                                // ],)
-                              ],),
-                            ),
-                            decoration: BoxDecoration(color: widget.sideBarColor),
-                          ), 
-                          flex: 2)
-                      ]),
-                      decoration: BoxDecoration(
-                        border: widget.border,
-                        boxShadow: widget.boxShadow,
-                        color: widget.color
-                      ),
+
+                                    // Stack(children: <Widget>[
+                                    //   Opacity(
+                                    //     opacity: _ac.value,
+                                    //     child: _buildSideBarItem(FontAwesomeIcons.slidersH, Colors.black, (){}),
+
+                                    //   ),
+                                    //   Opacity(opacity: 1-_ac.value,
+                                    //     child: _buildSideBarItem(FontAwesomeIcons.times, Colors.black, (){})
+                                    //   )
+                                    // ],)
+                                  ])),
+                              decoration: BoxDecoration(color: widget.sideBarColor)), )
+                          ]),
                     )
                   )
                 ),
@@ -361,6 +354,14 @@ class _SlidingUpPanelState extends State<SlidingUpPanel> with SingleTickerProvid
                     end: const Offset(0, 0)).animate(_ac),
                   child: widget.bottomNavigationBar
                 ) ?? Container(),
+
+
+                SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 0.8),
+                    end: const Offset(0, 0)).animate(_ac),
+                  child: AnimatedSlides(),
+                )
 
                 // collapsed panel
                 // Positioned(

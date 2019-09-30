@@ -27,7 +27,6 @@ import 'package:mental_math/routes/route_handlers.dart';
 
 
 const String welcomeRoute = '/';
-const String signUpRoute = '/signup';
 
 final router = Router();
 
