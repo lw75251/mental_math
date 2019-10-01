@@ -27,11 +27,13 @@ import 'package:mental_math/routes/route_handlers.dart';
 
 
 const String welcomeRoute = '/';
+const String optionsRoute = '/settings/:header/:img';
 
 final router = Router();
 
 class Routes {
   static void defineRoutes(Router router) {
     router.define(welcomeRoute, handler: mainHandler, transitionType: TransitionType.fadeIn);
+    router.define(optionsRoute, handler: optionsHandler, transitionType: TransitionType.fadeIn);
   }
 }

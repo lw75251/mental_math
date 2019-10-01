@@ -1,43 +1,76 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mental_math/custom/fade_page_route.dart';
 import 'package:mental_math/routes/router.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin {
   final double _iconSize = 28.0;
+
   final double _iconPadding = 20.0;
+
   final double _barPadding = 4.0;
 
   final List options = [
     {
       "header": "Addition",
       "img": AssetImage('assets/images/addition_background.jpg'),
+      "icon": FontAwesomeIcons.plus
     }, 
     {
       "header": "Subtraction",
       "img": AssetImage('assets/images/subtraction_background.jpg'),
+      "icon": FontAwesomeIcons.minus
     }, 
     {
       "header": "Multiplication",
       "img": AssetImage('assets/images/multiply_background.jpg'),
+      "icon": FontAwesomeIcons.times
     }, 
     {
       "header": "Division",
       "img": AssetImage('assets/images/divide_background.jpg'),
+      "icon": FontAwesomeIcons.divide
     }, 
     {
       "header": "Custom",
       "img": AssetImage('assets/images/all_background.jpg'),
+      "icon": Icons.settings
     },    
   ];
 
-  Widget _buildIcon( IconData _icon, BuildContext _context) {
+  AnimationController _ac;
+
+  @override
+  void initState() { 
+    _ac = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 150),
+    );
+    super.initState();
+  }
+
+  Widget _buildIcon( dynamic _icon, BuildContext _context) {
+    var test = options[0];
+    var header = test["header"];
+    var img = 'addition_background.jpg';
+
+    var icon =  _icon.runtimeType == IconData ? 
+      Icon(_icon, color: Colors.black, size: _iconSize) :
+      AnimatedIcon(icon: _icon, progress: _ac);
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: _iconPadding),
       child: GestureDetector(
-        child: Icon(_icon, color: Colors.black, size: _iconSize),
+        child: icon,
         onTap: (){
-          router.navigateTo(_context, welcomeRoute);
+          router.navigateTo(_context, "/settings/$header/$img", 
+            transitionDuration: const Duration(milliseconds: 500));
         })
     );
   }
@@ -47,16 +80,21 @@ class MainScreen extends StatelessWidget {
       width: 100,
       height: 50,
       child: Row(children: <Widget>[
-        Expanded(flex: 3, child: Text(data["header"], 
-          style: TextStyle(color: Colors.black, ),)),
-        Expanded(flex: 6, child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: data["img"]
-            )))
+        Expanded(flex: 3, child: Hero(
+          tag: data["header"],
+          child: Text(data["header"], 
+          style: TextStyle(color: Colors.black)),
+        )),
+        Expanded(flex: 6, child: Hero(
+          tag: data["header"]+"_img",
+          child: Image(image: data["img"], fit: BoxFit.cover,))
         ),
-        IconButton(icon: Icon(Icons.settings, size: _iconSize,), onPressed: (){},)
+        Padding(
+          padding: const EdgeInsets.only(left: 15.0),
+          child: Hero(
+            tag: data["header"]+"_icon",
+            child: Icon(data["icon"], size: _iconSize,)),
+        )
       ],),
     );
   }
@@ -69,7 +107,7 @@ class MainScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color(0XFFF2F7FB),
         elevation: 0.5,
-        leading: _buildIcon(Icons.menu, context),
+        leading: _buildIcon(AnimatedIcons.menu_arrow, context),
         actions: <Widget>[
           _buildIcon(Icons.search, context)
         ],
