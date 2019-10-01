@@ -17,27 +17,27 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   final List options = [
     {
       "header": "Addition",
-      "img": AssetImage('assets/images/addition_background.jpg'),
+      "img": "addition_background.jpg",
       "icon": FontAwesomeIcons.plus
     }, 
     {
       "header": "Subtraction",
-      "img": AssetImage('assets/images/subtraction_background.jpg'),
+      "img": "subtraction_background.jpg",
       "icon": FontAwesomeIcons.minus
     }, 
     {
       "header": "Multiplication",
-      "img": AssetImage('assets/images/multiply_background.jpg'),
+      "img": "multiply_background.jpg",
       "icon": FontAwesomeIcons.times
     }, 
     {
       "header": "Division",
-      "img": AssetImage('assets/images/divide_background.jpg'),
+      "img": "divide_background.jpg",
       "icon": FontAwesomeIcons.divide
     }, 
     {
       "header": "Custom",
-      "img": AssetImage('assets/images/all_background.jpg'),
+      "img": "all_background.jpg",
       "icon": Icons.settings
     },    
   ];
@@ -55,6 +55,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
       setState((){});
     });
 
+    // TODO: Figure out how to use Flurro onRoutePop
     // ValueNotifier will trigger defined animation according to its updated value
     stateNotifier = ValueNotifier(returnFromOptionsPage)
       ..addListener(() {
@@ -94,27 +95,38 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildListItem(Map data) {
+  Widget _buildListItem(Map data, BuildContext _context) {
+    String header = data["header"];
+    String img = data["img"];
     return Container(
       width: 100,
       height: 70,
       child: Row(children: <Widget>[
         Expanded(flex: 3, child: Hero(
-          tag: data["header"],
-          child: Text(data["header"], 
+          tag: header,
+          child: Text(header, 
           style: TextStyle(color: Colors.black)),
         )),
         Expanded(flex: 6, child: Hero(
-          tag: data["header"] + "_img",
-          child: Image(image: data["img"], fit: BoxFit.cover,))
+          tag: header + "_img",
+          child: Image(
+            image: AssetImage("assets/images/" + img),
+            fit: BoxFit.cover))
         ),
         Hero(
-            tag: data["header"] + "_icon",
-            child: Container(
-              height: 70,
-              width: 70,
-              child: Icon(data["icon"], size: _iconSize, color: Colors.white,),
-              color: Colors.black,
+            tag: header + "_icon",
+            child: GestureDetector(
+              onTap: (){
+                _ac.forward(from: 0.0);
+                router.navigateTo(_context, "/settings/$header/$img", 
+                  transitionDuration: const Duration(milliseconds: 1000));
+              },
+              child: Container(
+                height: 70,
+                width: 70,
+                child: Icon(data["icon"], size: _iconSize, color: Colors.white,),
+                color: Colors.black,
+              ),
             )),
       ],),
     );
@@ -156,7 +168,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
               width: maxWidth,
               child: ListView.separated(
                 itemCount: options.length,
-                itemBuilder: (context, int) => _buildListItem(options[int]),
+                itemBuilder: (context, int) => _buildListItem(options[int], context),
                 separatorBuilder: (context, _ ) => Padding(padding: EdgeInsets.all(10),),
               ),
             ),

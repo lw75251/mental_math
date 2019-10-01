@@ -13,10 +13,18 @@ class OptionScreen extends StatefulWidget {
 }
 
 class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderStateMixin {
+  
   final double _iconSize = 28.0;
   final double _iconPadding = 20.0;
   final double _barPadding = 4.0;
   
+  final Map iconMap = {
+    "Addition": FontAwesomeIcons.plus,
+    "Subtraction": FontAwesomeIcons.minus,
+    "Multiplication": FontAwesomeIcons.times,
+    "Division": FontAwesomeIcons.divide,
+    "Custom": FontAwesomeIcons.question
+  };
 
   Widget _buildIcon( IconData _icon, BuildContext _context) {
     return Padding(
@@ -29,33 +37,57 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
     );
   }
 
-  Widget _buildOptions() {
+  Widget _buildLayout() {
     final Map _gameData = widget.gameData;
     String img = _gameData["img"];
 
+    double maxWidth = MediaQuery.of(context).size.width;
+    double maxHeight = MediaQuery.of(context).size.height;
+
     return Padding(padding: EdgeInsets.only(top: 15.0, right: _barPadding, bottom: _barPadding ),
-          child: Column(children: <Widget>[
-            Row(children: <Widget>[
-              Container(height: 2.5, width: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  color: Colors.black38,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start, 
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: <Widget>[
+              Row(children: <Widget>[
+                Container(height: 2.5, width: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    color: Colors.black38,
+                  ),
                 ),
-              ),
-              Icon(FontAwesomeIcons.sun, size: _iconSize),
-              Text("Game Type", style: TextStyle(fontSize: 20.0),)
+                Icon(FontAwesomeIcons.sun, size: _iconSize),
+                Text(" Game Type", style: TextStyle(fontSize: 20.0),)
+              ]),
+              Hero(
+                tag: _gameData["header"]+"_img",
+                child: Image(
+                  fit: BoxFit.cover,
+                  image: AssetImage("assets/images/$img"), 
+                  width: 8*maxWidth/9, 
+                  height: 300.0,))
             ]),
-            Hero(
-              tag: _gameData["header"]+"_img",
-              child: Image(image:AssetImage("assets/images/$img"),width: 200.0, height: 200.0,))
-          ]),
     );
   }
 
   // TODO: Implement Buttons
-  // Widget _buildButtons(){
-  //   return Container();
-  // }
+  Widget _buildButtons(){
+    double maxWidth = MediaQuery.of(context).size.width;
+    double maxHeight = MediaQuery.of(context).size.height;
+    final Map _gameData = widget.gameData;
+    return Align(
+      alignment: FractionalOffset(7.8/9,0.01),
+      child: Hero(
+        tag: _gameData["header"] + "_icon",
+        child: Container(
+          height: 70,
+          width: 70,
+          child: Icon(iconMap[_gameData["header"]], size: _iconSize, color: Colors.white,),
+          color: Colors.black,
+        )),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +110,8 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
         ),
 
         body: Stack(children: <Widget>[
-              _buildOptions(),
-              // _buildButtons()
+              _buildLayout(),
+              _buildButtons()
             ])
       )
     ); 
