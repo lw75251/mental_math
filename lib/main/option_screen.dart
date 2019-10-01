@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mental_math/custom/hero.dart';
+import 'package:mental_math/custom/destination_title.dart';
 import 'package:mental_math/routes/router.dart';
 
 class OptionScreen extends StatefulWidget {
