@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mental_math/custom/hero.dart';
 import 'package:mental_math/routes/router.dart';
 
 class MainScreen extends StatefulWidget {
@@ -102,11 +103,36 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
       width: 100,
       height: 70,
       child: Row(children: <Widget>[
-        Expanded(flex: 3, child: Hero(
-          tag: header,
-          child: Text(header, 
-          style: TextStyle(color: Colors.black)),
-        )),
+        // Expanded(flex: 3, child: Hero(
+        //   tag: header,
+        //   child: Text(header, 
+        //   style: TextStyle(color: Colors.black)),
+        // )),
+        Expanded(flex: 3, child: 
+          Hero( tag: header,
+            // Customized your own flightShuttleBuilder
+            flightShuttleBuilder: (
+              BuildContext flightContext,
+              Animation<double> animation,
+              HeroFlightDirection flightDirection,
+              BuildContext fromHeroContext,
+              BuildContext toHeroContext) {
+                return DestinationTitle(
+                  title: header,
+                  isOverflow: true,
+                  viewState: flightDirection == HeroFlightDirection.push
+                      ? ViewState.enlarge
+                      : ViewState.shrink,
+                  smallFontSize: 20.0,
+                  largeFontSize: 48.0,
+                );
+              },
+        // use a ViewState that define static widget when it's not supposed to animate
+          child: DestinationTitle(
+            title: header,
+            viewState: ViewState.shrunk,
+          ))),
+
         Expanded(flex: 6, child: Hero(
           tag: header + "_img",
           child: Image(

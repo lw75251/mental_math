@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mental_math/custom/hero.dart';
 import 'package:mental_math/routes/router.dart';
 
 class OptionScreen extends StatefulWidget {
@@ -61,13 +62,53 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
                 Text(" Game Type", style: TextStyle(fontSize: 20.0),)
               ]),
               Hero(
-                tag: _gameData["header"]+"_img",
+                tag: _gameData["header"] + "_img",
                 child: Image(
                   fit: BoxFit.cover,
                   image: AssetImage("assets/images/$img"), 
                   width: 8*maxWidth/9, 
                   height: 300.0,))
             ]),
+    );
+  }
+
+  Widget _buildSettings() {
+    final Map _gameData = widget.gameData;
+    final String header = _gameData["header"];
+    // return Hero( tag: header,
+    //   child: Text(header, 
+    //   style: TextStyle(color: Colors.black))
+    // );
+    return Align(
+      alignment: FractionalOffset(1,1),
+      child: Hero(
+        tag: header,
+      // Customized your own flightShuttleBuilder
+        flightShuttleBuilder: (
+          BuildContext flightContext,
+          Animation<double> animation,
+          HeroFlightDirection flightDirection,
+          BuildContext fromHeroContext,
+          BuildContext toHeroContext,
+        ) {
+          return DestinationTitle(
+            title: header,
+            isOverflow: true,
+            viewState: flightDirection == HeroFlightDirection.pop
+                ? ViewState.enlarge
+                : ViewState.shrink,
+            smallFontSize: 20.0,
+            largeFontSize: 40.0,
+          );
+        },
+      // use a ViewState that define static widget when it's not supposed to animate
+        child: DestinationTitle(
+          title: header,
+          smallFontSize: 30.0,
+          largeFontSize: 42.0,
+          viewState: ViewState.shrunk,
+        ),
+      ),
     );
   }
 
@@ -111,7 +152,8 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
 
         body: Stack(children: <Widget>[
               _buildLayout(),
-              _buildButtons()
+              _buildButtons(),
+              _buildSettings()
             ])
       )
     ); 
