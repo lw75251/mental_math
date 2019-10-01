@@ -1,7 +1,5 @@
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mental_math/custom/fade_page_route.dart';
 import 'package:mental_math/routes/router.dart';
 
 class MainScreen extends StatefulWidget {
@@ -45,13 +43,27 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   ];
 
   AnimationController _ac;
+  ValueNotifier<bool> stateNotifier;
+  bool returnFromOptionsPage = false;
 
   @override
   void initState() { 
     _ac = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 150),
-    );
+      duration: const Duration(milliseconds: 250),
+    )..addListener((){
+      setState((){});
+    });
+
+    // ValueNotifier will trigger defined animation according to its updated value
+    stateNotifier = ValueNotifier(returnFromOptionsPage)
+      ..addListener(() {
+        if (stateNotifier.value) {
+          _ac.reverse(from: 1.0);
+          stateNotifier.value = false;
+        }
+      });
+
     super.initState();
   }
 
@@ -59,18 +71,25 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
     var test = options[0];
     var header = test["header"];
     var img = 'addition_background.jpg';
-
-    var icon =  _icon.runtimeType == IconData ? 
-      Icon(_icon, color: Colors.black, size: _iconSize) :
-      AnimatedIcon(icon: _icon, progress: _ac);
-
-    return Padding(
+    return _icon.runtimeType == IconData ? 
+    Padding(
       padding: EdgeInsets.symmetric(horizontal: _iconPadding),
       child: GestureDetector(
-        child: icon,
-        onTap: (){
+        child: Icon(_icon, color: Colors.black, size: _iconSize),
+        onTap: () async {
+          _ac.forward(from: 0.0);
           router.navigateTo(_context, "/settings/$header/$img", 
             transitionDuration: const Duration(milliseconds: 500));
+
+        })
+    ) : Padding(
+      padding: EdgeInsets.only(left: _iconPadding-1.35, top: _iconPadding-6),
+      child: GestureDetector(
+        child: AnimatedIcon(icon: _icon, progress: _ac, color: Colors.black,size: _iconSize),
+        onTap: (){
+          _ac.forward(from: 0.0);
+          router.navigateTo(_context, "/settings/$header/$img", 
+            transitionDuration: const Duration(milliseconds: 1000));
         })
     );
   }
@@ -78,7 +97,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   Widget _buildListItem(Map data) {
     return Container(
       width: 100,
-      height: 50,
+      height: 70,
       child: Row(children: <Widget>[
         Expanded(flex: 3, child: Hero(
           tag: data["header"],
@@ -86,15 +105,17 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
           style: TextStyle(color: Colors.black)),
         )),
         Expanded(flex: 6, child: Hero(
-          tag: data["header"]+"_img",
+          tag: data["header"] + "_img",
           child: Image(image: data["img"], fit: BoxFit.cover,))
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 15.0),
-          child: Hero(
-            tag: data["header"]+"_icon",
-            child: Icon(data["icon"], size: _iconSize,)),
-        )
+        Hero(
+            tag: data["header"] + "_icon",
+            child: Container(
+              height: 70,
+              width: 70,
+              child: Icon(data["icon"], size: _iconSize, color: Colors.white,),
+              color: Colors.black,
+            )),
       ],),
     );
   }
@@ -136,7 +157,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
               child: ListView.separated(
                 itemCount: options.length,
                 itemBuilder: (context, int) => _buildListItem(options[int]),
-                separatorBuilder: (context, _ ) => Padding(padding: EdgeInsets.all(15),),
+                separatorBuilder: (context, _ ) => Padding(padding: EdgeInsets.all(10),),
               ),
             ),
           )

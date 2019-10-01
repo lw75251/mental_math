@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mental_math/gradients.dart';
-import 'package:provider/provider.dart';
 
 class GameSettingScreen extends StatelessWidget {
   const GameSettingScreen({Key key}) : super(key: key);

@@ -12,19 +12,19 @@ class OptionScreen extends StatefulWidget {
   _OptionScreenState createState() => _OptionScreenState();
 }
 
-class _OptionScreenState extends State<OptionScreen> {
+class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderStateMixin {
   final double _iconSize = 28.0;
   final double _iconPadding = 20.0;
   final double _barPadding = 4.0;
+  
 
   Widget _buildIcon( IconData _icon, BuildContext _context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: _iconPadding),
+      padding: EdgeInsets.symmetric(horizontal: _iconPadding-1.2),
       child: GestureDetector(
         child: Icon(_icon, color: Colors.black, size: _iconSize),
         onTap: (){
-          router.navigateTo(_context, welcomeRoute, 
-            transitionDuration: const Duration(milliseconds: 500));
+          router.pop(context);
         })
     );
   }
@@ -52,28 +52,36 @@ class _OptionScreenState extends State<OptionScreen> {
     );
   }
 
-  Widget _buildButtons(){
-    return Container();
-  }
+  // TODO: Implement Buttons
+  // Widget _buildButtons(){
+  //   return Container();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    double maxHeight = MediaQuery.of(context).size.height;
-    double maxWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0XFFF2F7FB),
-        elevation: 0.5,
-        leading: _buildIcon(Icons.arrow_back, context),
-        actions: <Widget>[
-          _buildIcon(Icons.search, context)
-        ],
-      ),
+    // double maxHeight = MediaQuery.of(context).size.height;
+    // double maxWidth = MediaQuery.of(context).size.width;
 
-      body: Stack(children: <Widget>[
-            _buildOptions(),
-            _buildButtons()
-          ])
-    );
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pop(true);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0XFFF2F7FB),
+          elevation: 0.5,
+          leading: _buildIcon(Icons.arrow_back, context),
+          actions: <Widget>[
+            _buildIcon(Icons.search, context)
+          ],
+        ),
+
+        body: Stack(children: <Widget>[
+              _buildOptions(),
+              // _buildButtons()
+            ])
+      )
+    ); 
   }
 }

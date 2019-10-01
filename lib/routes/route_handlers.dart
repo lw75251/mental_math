@@ -1,6 +1,5 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:mental_math/main/home_screen.dart';
 import 'package:mental_math/main/main_screen.dart';
 import 'package:mental_math/main/option_screen.dart';
 import 'package:mental_math/routes/router.dart';
@@ -8,17 +7,7 @@ import 'package:mental_math/utils/fluro.dart';
 
 Handler welcomeHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    // return ChangeNotifierProvider(
-    //   builder: (context) => ColorTheme(quepalGradients),
-    //   child: Material(
-    //     child: Stack(
-    //       children: <Widget>[
-    //         Background(),
-    //         LandingScreen()
-    //       ],
-    //     ),
-    //   ),
-    // );
+    return Container();
   });
 
 Handler mainHandler = Handler(
