@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mental_math/custom/destination_title.dart';
-import 'package:mental_math/routes/router.dart';
 
 class OptionScreen extends StatefulWidget {
   final Map gameData;
@@ -33,7 +32,8 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
       child: GestureDetector(
         child: Icon(_icon, color: Colors.black, size: _iconSize),
         onTap: (){
-          router.pop(context);
+          Navigator.of(context).pop(true);
+          return Future.value(false);          
         })
     );
   }
@@ -61,18 +61,25 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
                 Icon(FontAwesomeIcons.sun, size: _iconSize),
                 Text(" Game Type", style: TextStyle(fontSize: 20.0),)
               ]),
-              Hero(
-                tag: _gameData["header"] + "_img",
-                child: Image(
-                  fit: BoxFit.cover,
-                  image: AssetImage("assets/images/$img"), 
-                  width: 8*maxWidth/9, 
-                  height: 300.0,))
+              _buildImage()
             ]),
     );
   }
 
-  Widget _buildSettings() {
+  Widget _buildImage() {
+    final Map _gameData = widget.gameData;
+    double maxWidth = MediaQuery.of(context).size.width;
+    String img = _gameData["img"];
+    return Hero(
+      tag: _gameData["header"] + "_img",
+      child: Image(
+        fit: BoxFit.cover,
+        image: AssetImage("assets/images/$img"), 
+        width: 8*maxWidth/9, 
+        height: 300.0,));
+  }
+
+  Widget _buildTitle() {
     final Map _gameData = widget.gameData;
     final String header = _gameData["header"];
     // return Hero( tag: header,
@@ -80,7 +87,7 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
     //   style: TextStyle(color: Colors.black))
     // );
     return Align(
-      alignment: FractionalOffset(1,1),
+      alignment: FractionalOffset(0.10,0.49),
       child: Hero(
         tag: header,
       // Customized your own flightShuttleBuilder
@@ -95,8 +102,8 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
             title: header,
             isOverflow: true,
             viewState: flightDirection == HeroFlightDirection.pop
-                ? ViewState.enlarge
-                : ViewState.shrink,
+                ? ViewState.shrink
+                : ViewState.enlarge,
             smallFontSize: 20.0,
             largeFontSize: 40.0,
           );
@@ -104,16 +111,16 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
       // use a ViewState that define static widget when it's not supposed to animate
         child: DestinationTitle(
           title: header,
-          smallFontSize: 30.0,
-          largeFontSize: 42.0,
-          viewState: ViewState.shrunk,
+          smallFontSize: 20.0,
+          largeFontSize: 40.0,
+          viewState: ViewState.enlarged,
         ),
       ),
     );
   }
 
   // TODO: Implement Buttons
-  Widget _buildButtons(){
+  Widget _buildIndicator(){
     double maxWidth = MediaQuery.of(context).size.width;
     double maxHeight = MediaQuery.of(context).size.height;
     final Map _gameData = widget.gameData;
@@ -130,6 +137,15 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
     );
   }
 
+  Widget _buildHeros() {
+    return Stack(
+      children: <Widget>[
+        _buildIndicator(),
+        _buildTitle()
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // double maxHeight = MediaQuery.of(context).size.height;
@@ -137,6 +153,7 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
 
     return WillPopScope(
       onWillPop: () {
+        print("here");
         Navigator.of(context).pop(true);
         return Future.value(false);
       },
@@ -152,8 +169,7 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
 
         body: Stack(children: <Widget>[
               _buildLayout(),
-              _buildButtons(),
-              _buildSettings()
+              _buildHeros(),
             ])
       )
     ); 

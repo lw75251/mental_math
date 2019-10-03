@@ -102,59 +102,101 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
     return Container(
       width: 100,
       height: 70,
-      child: Row(children: <Widget>[
-        // Expanded(flex: 3, child: Hero(
-        //   tag: header,
-        //   child: Text(header, 
-        //   style: TextStyle(color: Colors.black)),
-        // )),
-        Expanded(flex: 3, child: 
-          Hero( tag: header,
-            // Customized your own flightShuttleBuilder
-            flightShuttleBuilder: (
-              BuildContext flightContext,
-              Animation<double> animation,
-              HeroFlightDirection flightDirection,
-              BuildContext fromHeroContext,
-              BuildContext toHeroContext) {
-                return DestinationTitle(
-                  title: header,
-                  isOverflow: true,
-                  viewState: flightDirection == HeroFlightDirection.push
-                      ? ViewState.enlarge
-                      : ViewState.shrink,
-                  smallFontSize: 20.0,
-                  largeFontSize: 48.0,
-                );
-              },
-        // use a ViewState that define static widget when it's not supposed to animate
-          child: DestinationTitle(
-            title: header,
-            viewState: ViewState.shrunk,
-          ))),
-
-        Expanded(flex: 6, child: Hero(
-          tag: header + "_img",
-          child: Image(
-            image: AssetImage("assets/images/" + img),
-            fit: BoxFit.cover))
-        ),
-        Hero(
-            tag: header + "_icon",
-            child: GestureDetector(
-              onTap: (){
+      child: Stack(
+        children: <Widget>[
+          Row( children: <Widget>[
+            Expanded(flex: 3, child: Container()),
+            Expanded(flex: 6, child: Hero(
+              tag: header + "_img",
+              child: Image(
+                image: AssetImage("assets/images/" + img),
+                fit: BoxFit.cover))
+            ),
+            Hero( tag: header + "_icon", child: GestureDetector(
+              onTap: () async {
                 _ac.forward(from: 0.0);
-                router.navigateTo(_context, "/settings/$header/$img", 
+                stateNotifier.value = await router.navigateTo(context, "/settings/$header/$img", 
                   transitionDuration: const Duration(milliseconds: 1000));
               },
-              child: Container(
-                height: 70,
-                width: 70,
-                child: Icon(data["icon"], size: _iconSize, color: Colors.white,),
-                color: Colors.black,
-              ),
-            )),
-      ],),
+              child: Container( height: 70, width: 70,
+                child: Icon(data["icon"], size: _iconSize, color: Colors.white),
+                color: Colors.black),
+            ))
+          ]),
+          
+          Row( children: <Widget>[
+            Expanded(flex: 3, child: Hero( tag: header,
+              // Customized your own flightShuttleBuilder
+              flightShuttleBuilder: (_, __, flightDirection, ___, ____) {
+                  return DestinationTitle(
+                    title: header,
+                    isOverflow: true,
+                    viewState: flightDirection == HeroFlightDirection.push
+                        ? ViewState.enlarge
+                        : ViewState.shrink,
+                    smallFontSize: 20.0,
+                    largeFontSize: 50.0,
+                  );
+                },
+        // use a ViewState that define static widget when it's not supposed to animate
+              child: DestinationTitle(
+                title: header,
+                viewState: ViewState.shrunk,
+              ))),
+            Expanded(flex: 6, child: Container()),
+            Container(height: 70, width: 70)
+          ]),  
+      ])
+          
+      // child: Row(children: <Widget>[
+      //   Expanded(flex: 3, child: 
+      //     //TODO: Change Hero Text Widget to FadeOut/FadeIn
+      //     Hero( tag: header,
+      //       // Customized your own flightShuttleBuilder
+      //       flightShuttleBuilder: (
+      //         BuildContext flightContext,
+      //         Animation<double> animation,
+      //         HeroFlightDirection flightDirection,
+      //         BuildContext fromHeroContext,
+      //         BuildContext toHeroContext) {
+      //           return DestinationTitle(
+      //             title: header,
+      //             isOverflow: true,
+      //             viewState: flightDirection == HeroFlightDirection.push
+      //                 ? ViewState.enlarge
+      //                 : ViewState.shrink,
+      //             smallFontSize: 20.0,
+      //             largeFontSize: 50.0,
+      //           );
+      //         },
+      //   // use a ViewState that define static widget when it's not supposed to animate
+      //     child: DestinationTitle(
+      //       title: header,
+      //       viewState: ViewState.shrunk,
+      //     ))),
+
+      //   Expanded(flex: 6, child: Hero(
+      //     tag: header + "_img",
+      //     child: Image(
+      //       image: AssetImage("assets/images/" + img),
+      //       fit: BoxFit.cover))
+      //   ),
+      //   Hero(
+      //       tag: header + "_icon",
+      //       child: GestureDetector(
+      //         onTap: () async {
+      //           _ac.forward(from: 0.0);
+      //           stateNotifier.value = await router.navigateTo(_context, "/settings/$header/$img", 
+      //             transitionDuration: const Duration(milliseconds: 1000));
+      //         },
+      //         child: Container(
+      //           height: 70,
+      //           width: 70,
+      //           child: Icon(data["icon"], size: _iconSize, color: Colors.white,),
+      //           color: Colors.black,
+      //         ),
+      //       )),
+      // ],),
     );
   }
 
@@ -183,14 +225,15 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                     color: Colors.black38,
                   ),
                 ),
-              Text("Game Type")
+              //TODO: Align Game Types for both screens and create a Hero Widget to shift and animate icon
+              Text(" Game Type", style: TextStyle(fontSize: 20),)
             ],),
           ),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
-              height: maxHeight - 116.0,
+              height: maxHeight - 125.0,
               width: maxWidth,
               child: ListView.separated(
                 itemCount: options.length,
