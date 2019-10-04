@@ -109,13 +109,20 @@ class _DestinationTitleState extends State<DestinationTitle>
   Widget build(BuildContext context) {
     
     // Just a stateless Text widget with font size as parameter
-    return Text( widget.title,
-      style: TextStyle(
-        fontSize: fontSize,
-        color: Colors.black
+    return 
+    FittedBox(
+      fit: BoxFit.none,
+      alignment: Alignment.centerLeft,
+      child: Text( widget.title,
+        style: TextStyle(
+          fontFamily: 'Varela',
+          fontWeight: FontWeight.w500,
+          fontSize: fontSize,
+          color: Colors.black
+        ),
+        maxLines: widget.maxLines,
+        overflow: widget.textOverflow,
       ),
-      maxLines: widget.maxLines,
-      overflow: widget.textOverflow,
     );
   }
 }

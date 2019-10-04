@@ -16,13 +16,27 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
   
   final double _iconSize = 28.0;
   final double _iconPadding = 20.0;
-  final double _barPadding = 4.0;
-  
+  final double _barPadding = 10.0;
+  AnimationController _ac;
+
+  @override
+  void initState() {
+    _ac = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    )..addListener((){
+      setState((){});
+    });
+
+    _ac.forward();
+    super.initState();
+  }
+
   final Map iconMap = {
-    "Addition": FontAwesomeIcons.plus,
-    "Subtraction": FontAwesomeIcons.minus,
-    "Multiplication": FontAwesomeIcons.times,
-    "Division": FontAwesomeIcons.divide,
+    "Add": FontAwesomeIcons.plus,
+    "Subtract": FontAwesomeIcons.minus,
+    "Multiply": FontAwesomeIcons.times,
+    "Divide": FontAwesomeIcons.divide,
     "Custom": FontAwesomeIcons.question
   };
 
@@ -32,6 +46,7 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
       child: GestureDetector(
         child: Icon(_icon, color: Colors.black, size: _iconSize),
         onTap: (){
+          _ac.reverse();
           Navigator.of(context).pop(true);
           return Future.value(false);          
         })
@@ -39,31 +54,26 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
   }
 
   Widget _buildLayout() {
-    final Map _gameData = widget.gameData;
-    String img = _gameData["img"];
+  return Column( crossAxisAlignment: CrossAxisAlignment.start, 
+    children: <Widget>[
+      Padding(padding: EdgeInsets.only(top: 15.0, bottom: 10.0 ),
+        child: Row(children: <Widget>[
+          Container(height: 2.5, width: 30,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              color: Colors.black38,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: Icon(FontAwesomeIcons.sun, size: _ac.value * 20),
+          ),
+          Text("Game Type", style: TextStyle(fontSize: 20.0),)
+        ]),
+      ),
 
-    double maxWidth = MediaQuery.of(context).size.width;
-    double maxHeight = MediaQuery.of(context).size.height;
-
-    return Padding(padding: EdgeInsets.only(top: 15.0, right: _barPadding, bottom: _barPadding ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start, 
-            crossAxisAlignment: CrossAxisAlignment.start,
-
-            children: <Widget>[
-              Row(children: <Widget>[
-                Container(height: 2.5, width: 30,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    color: Colors.black38,
-                  ),
-                ),
-                Icon(FontAwesomeIcons.sun, size: _iconSize),
-                Text(" Game Type", style: TextStyle(fontSize: 20.0),)
-              ]),
-              _buildImage()
-            ]),
-    );
+      _buildImage()
+    ]);
   }
 
   Widget _buildImage() {
@@ -87,17 +97,11 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
     //   style: TextStyle(color: Colors.black))
     // );
     return Align(
-      alignment: FractionalOffset(0.10,0.49),
+      alignment: FractionalOffset(0.10,0.5),
       child: Hero(
         tag: header,
       // Customized your own flightShuttleBuilder
-        flightShuttleBuilder: (
-          BuildContext flightContext,
-          Animation<double> animation,
-          HeroFlightDirection flightDirection,
-          BuildContext fromHeroContext,
-          BuildContext toHeroContext,
-        ) {
+        flightShuttleBuilder: (_,__, flightDirection, ___, ____) {
           return DestinationTitle(
             title: header,
             isOverflow: true,
@@ -109,12 +113,9 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
           );
         },
       // use a ViewState that define static widget when it's not supposed to animate
-        child: DestinationTitle(
-          title: header,
-          smallFontSize: 20.0,
-          largeFontSize: 40.0,
-          viewState: ViewState.enlarged,
-        ),
+        child: Text(header, style: TextStyle(
+          fontSize: 40.0
+        )) 
       ),
     );
   }
@@ -151,13 +152,7 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
     // double maxHeight = MediaQuery.of(context).size.height;
     // double maxWidth = MediaQuery.of(context).size.width;
 
-    return WillPopScope(
-      onWillPop: () {
-        print("here");
-        Navigator.of(context).pop(true);
-        return Future.value(false);
-      },
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0XFFF2F7FB),
           elevation: 0.5,
@@ -171,7 +166,6 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
               _buildLayout(),
               _buildHeros(),
             ])
-      )
     ); 
   }
 }

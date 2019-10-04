@@ -13,26 +13,26 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
 
   final double _iconPadding = 20.0;
 
-  final double _barPadding = 4.0;
+  final double _barPadding = 10.0;
 
   final List options = [
     {
-      "header": "Addition",
+      "header": "Add",
       "img": "addition_background.jpg",
       "icon": FontAwesomeIcons.plus
     }, 
     {
-      "header": "Subtraction",
+      "header": "Subtract",
       "img": "subtraction_background.jpg",
       "icon": FontAwesomeIcons.minus
     }, 
     {
-      "header": "Multiplication",
+      "header": "Multiply",
       "img": "multiply_background.jpg",
       "icon": FontAwesomeIcons.times
     }, 
     {
-      "header": "Division",
+      "header": "Divide",
       "img": "divide_background.jpg",
       "icon": FontAwesomeIcons.divide
     }, 
@@ -106,7 +106,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
         children: <Widget>[
           Row( children: <Widget>[
             Expanded(flex: 3, child: Container()),
-            Expanded(flex: 6, child: Hero(
+            Expanded(flex: 5, child: Hero(
               tag: header + "_img",
               child: Image(
                 image: AssetImage("assets/images/" + img),
@@ -135,7 +135,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                         ? ViewState.enlarge
                         : ViewState.shrink,
                     smallFontSize: 20.0,
-                    largeFontSize: 50.0,
+                    largeFontSize: 40.0,
                   );
                 },
         // use a ViewState that define static widget when it's not supposed to animate
@@ -147,56 +147,6 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
             Container(height: 70, width: 70)
           ]),  
       ])
-          
-      // child: Row(children: <Widget>[
-      //   Expanded(flex: 3, child: 
-      //     //TODO: Change Hero Text Widget to FadeOut/FadeIn
-      //     Hero( tag: header,
-      //       // Customized your own flightShuttleBuilder
-      //       flightShuttleBuilder: (
-      //         BuildContext flightContext,
-      //         Animation<double> animation,
-      //         HeroFlightDirection flightDirection,
-      //         BuildContext fromHeroContext,
-      //         BuildContext toHeroContext) {
-      //           return DestinationTitle(
-      //             title: header,
-      //             isOverflow: true,
-      //             viewState: flightDirection == HeroFlightDirection.push
-      //                 ? ViewState.enlarge
-      //                 : ViewState.shrink,
-      //             smallFontSize: 20.0,
-      //             largeFontSize: 50.0,
-      //           );
-      //         },
-      //   // use a ViewState that define static widget when it's not supposed to animate
-      //     child: DestinationTitle(
-      //       title: header,
-      //       viewState: ViewState.shrunk,
-      //     ))),
-
-      //   Expanded(flex: 6, child: Hero(
-      //     tag: header + "_img",
-      //     child: Image(
-      //       image: AssetImage("assets/images/" + img),
-      //       fit: BoxFit.cover))
-      //   ),
-      //   Hero(
-      //       tag: header + "_icon",
-      //       child: GestureDetector(
-      //         onTap: () async {
-      //           _ac.forward(from: 0.0);
-      //           stateNotifier.value = await router.navigateTo(_context, "/settings/$header/$img", 
-      //             transitionDuration: const Duration(milliseconds: 1000));
-      //         },
-      //         child: Container(
-      //           height: 70,
-      //           width: 70,
-      //           child: Icon(data["icon"], size: _iconSize, color: Colors.white,),
-      //           color: Colors.black,
-      //         ),
-      //       )),
-      // ],),
     );
   }
 
@@ -217,23 +167,26 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
       body: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 15.0, right: _barPadding, bottom: _barPadding ),
+            padding: EdgeInsets.only(top: 15.0, bottom: _barPadding ),
             child: Row(children: <Widget>[
-                Container(height: 2.5, width: 30,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    color: Colors.black38,
-                  ),
+              Container(height: 2.5, width: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  color: Colors.black38,
                 ),
-              //TODO: Align Game Types for both screens and create a Hero Widget to shift and animate icon
-              Text(" Game Type", style: TextStyle(fontSize: 20),)
-            ],),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Icon(FontAwesomeIcons.sun, size: 0),
+              ),
+              Text("Game Type", style: TextStyle(fontSize: 20.0),)
+            ]),
           ),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
-              height: maxHeight - 125.0,
+              height: maxHeight - 129.0,
               width: maxWidth,
               child: ListView.separated(
                 itemCount: options.length,
