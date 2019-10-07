@@ -158,7 +158,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
       appBar: AppBar(
         backgroundColor: Color(0XFFF2F7FB),
         elevation: 0.5,
-        leading: _buildIcon(AnimatedIcons.menu_arrow, context),
+        leading: _buildIcon(AnimatedIcons.view_list, context),
         actions: <Widget>[
           _buildIcon(Icons.search, context)
         ],
@@ -169,24 +169,36 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
           Padding(
             padding: EdgeInsets.only(top: 15.0, bottom: _barPadding ),
             child: Row(children: <Widget>[
-              Container(height: 2.5, width: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  color: Colors.black38,
-                ),
-              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Icon(FontAwesomeIcons.sun, size: 0),
-              ),
-              Text("Game Type", style: TextStyle(fontSize: 20.0),)
-            ]),
+                    padding: const EdgeInsets.only(right: 5.0),
+                    child: Container(height: 2.5, width: 30,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        color: Colors.black38,
+                      ),
+                  ),
+                ),
+                Expanded(
+                  child: Hero(
+                    tag: "title",
+                  // Customized your own flightShuttleBuilder
+                    flightShuttleBuilder: (_,__, flightDirection, ___, ____) {
+                      return DestinationTitle( title: "Game Type", smallFontSize: 20.0, largeFontSize: 30.0,
+                        viewState: flightDirection == HeroFlightDirection.push ? 
+                          ViewState.shrink : ViewState.enlarge,
+                      );
+                    },
+                  // use a ViewState that define static widget when it's not supposed to animate
+                    child: Text("Game Type", style: TextStyle(fontSize: 30.0)) 
+                  ),
+                )
+              ]),
           ),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
-              height: maxHeight - 129.0,
+              height: maxHeight - 141.0,
               width: maxWidth,
               child: ListView.separated(
                 itemCount: options.length,

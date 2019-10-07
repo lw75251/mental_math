@@ -113,7 +113,8 @@ class _DestinationTitleState extends State<DestinationTitle>
     FittedBox(
       fit: BoxFit.none,
       alignment: Alignment.centerLeft,
-      child: Text( widget.title,
+      child: 
+      Text( widget.title,
         style: TextStyle(
           fontFamily: 'Varela',
           fontWeight: FontWeight.w500,
@@ -124,5 +125,7 @@ class _DestinationTitleState extends State<DestinationTitle>
         overflow: widget.textOverflow,
       ),
     );
+
+    
   }
 }
