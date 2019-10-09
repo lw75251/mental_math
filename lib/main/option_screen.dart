@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mental_math/custom/destination_title.dart';
+import 'package:mental_math/routes/router.dart';
 
 class OptionScreen extends StatefulWidget {
   final Map gameData;
@@ -200,6 +201,12 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
             )
             ]),         
           Align(child: _buildButtons()),
+          MaterialButton(color: Colors.blueAccent,
+            onPressed: (){
+              router.navigateTo(context, "/game/$header/$activeIndex", 
+                transitionDuration: const Duration(milliseconds: 500));
+            },
+          )
 
         ]),
       )

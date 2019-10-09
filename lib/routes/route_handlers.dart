@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_math/main/game_screen.dart';
 import 'package:mental_math/main/main_screen.dart';
 import 'package:mental_math/main/option_screen.dart';
 import 'package:mental_math/routes/router.dart';
@@ -22,3 +23,11 @@ Handler optionsHandler = Handler(
     Map data = FluroUtils.paramsToMap(optionsRoute, params);
     return OptionScreen(data);
   });
+
+Handler gameHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+
+    // Map Data: header, type, difficulty
+    Map data = FluroUtils.paramsToMap(gameRoute, params);
+    return GameScreen(data);
+  });  
