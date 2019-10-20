@@ -56,7 +56,6 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
       setState((){});
     });
 
-    // TODO: Figure out how to use Flurro onRoutePop
     // ValueNotifier will trigger defined animation according to its updated value
     stateNotifier = ValueNotifier(returnFromOptionsPage)
       ..addListener(() {

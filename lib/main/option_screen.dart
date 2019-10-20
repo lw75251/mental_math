@@ -201,11 +201,13 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
             )
             ]),         
           Align(child: _buildButtons()),
-          MaterialButton(color: Colors.blueAccent,
-            onPressed: (){
-              router.navigateTo(context, "/game/$header/$activeIndex", 
-                transitionDuration: const Duration(milliseconds: 500));
-            },
+          Center(
+            child: MaterialButton(child: Text("Start"),color: Colors.blueAccent,
+              onPressed: (){
+                router.navigateTo(context, "/game/$header/$activeIndex", 
+                  transitionDuration: const Duration(milliseconds: 500));
+              },
+            ),
           )
 
         ]),

@@ -20,9 +20,17 @@ class _CountDownState extends State<CountDown> with TickerProviderStateMixin{
   void initState() {
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 20)
+      duration: Duration(minutes: 2)
     );
+
+    controller.forward();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -36,7 +44,7 @@ class _CountDownState extends State<CountDown> with TickerProviderStateMixin{
               return new CustomPaint(
                 painter: TimerPainter(
                   animation: controller,
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.black,
                   color: Colors.pink
                 ),
               );
@@ -50,11 +58,10 @@ class _CountDownState extends State<CountDown> with TickerProviderStateMixin{
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("Count Down"),
               AnimatedBuilder(animation: controller,
                 builder: (context, child) {
                   return new Text(timerString,
-                    style: TextStyle(fontSize: 40),
+                    style: TextStyle(fontSize: 25),
                   );
                 },
               )
@@ -85,11 +92,11 @@ class TimerPainter extends CustomPainter {
       ..strokeWidth = 5.0
       .. style = PaintingStyle.stroke;
 
-    canvas.drawCircle(size.center(Offset.zero), size.width / 2.0, paint);
+    canvas.drawCircle(size.center(Offset.zero), size.width / 4.0, paint);
     paint.color = color;
 
     double progress = (1.0 - animation.value) * 2 * pi;
-    canvas.drawArc(Offset.zero & size, pi * 1.5, -progress, false, paint);
+    canvas.drawArc(Offset(44,44) & size/2, pi * 1.5, -progress, false, paint);
   }
 
   @override
