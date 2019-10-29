@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mental_math/custom/game_stats.dart';
+import 'package:provider/provider.dart';
 
 class Calculator extends StatefulWidget {
   final Map<String, String> gameSettings;
@@ -21,8 +23,10 @@ class _CalculatorState extends State<Calculator> {
   int top;
   int bottom;
   List<int> answer = new List(4);
+  List<String> operators = ["+","-","x","/"];
 
   String display = "";
+  String _operator;
 
   void updateAnswers() {
     answer[0] = top + bottom;
@@ -33,9 +37,11 @@ class _CalculatorState extends State<Calculator> {
   
   @override
   void initState() { 
-    top = next(0,10);
-    bottom = next(0,10);
+    top = next(10,99);
+    bottom = next(1,10);
     activeIndex = int.parse(widget.gameSettings["difficulty"]);
+    _operator = operators[activeIndex];
+
 
     answer[0] = top + bottom;
     answer[1] = top - bottom;
@@ -51,12 +57,25 @@ class _CalculatorState extends State<Calculator> {
   String get val => input.toString();
 
   Widget _buildDisplay(){
+    TextStyle style = TextStyle(
+      fontSize: 40,
+      letterSpacing: 10,
+      color: Colors.black,
+    );
     return Container(
       child: Column(
         children: <Widget>[
-        Text(top.toString()),
-        Text(bottom.toString()),
-        Text(display.toString())
+        Text(top.toString(), style: style),
+        Row(children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 1.0),
+            child: Text(_operator, style: style),
+          ),
+          Text(bottom.toString(), style: style),
+        ]),
+        
+        Text(display.toString(), style: style)
+        
       ]),
     );
   }
@@ -78,6 +97,7 @@ class _CalculatorState extends State<Calculator> {
 
   @override
   Widget build(BuildContext context) {
+    final stats = Provider.of<GameStats>(context); 
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height/2,
@@ -118,7 +138,11 @@ class _CalculatorState extends State<Calculator> {
             MaterialButton(
               child: Text("Submit"),
               onPressed: (){
-                if( int.parse(display) == answer[activeIndex] ){
+
+                bool outcome = int.parse(display) == answer[activeIndex];
+                stats.stats = outcome;
+
+                if( outcome ){
                   // Correct UI
                   print("correct");
                 } else {
