@@ -70,6 +70,8 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(widget.gameSettings["header"], 
+                style: TextStyle(color: Colors.black),),
         backgroundColor: Color(0XFFF2F7FB),
         elevation: 0.5,
         leading: _buildIcon(Icons.arrow_back, context),

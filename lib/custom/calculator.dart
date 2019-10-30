@@ -19,6 +19,15 @@ class _CalculatorState extends State<Calculator> {
   final Random _random = Random();
   final bool generateQuestion = true;
   
+  Map<String,int> type = {
+    "Add": 0,
+    "Subtract": 1,
+    "Multiply": 2,
+    "Divide" : 3,
+    "Custom" : 4,
+  };
+
+
   int activeIndex;
   int top;
   int bottom;
@@ -39,9 +48,8 @@ class _CalculatorState extends State<Calculator> {
   void initState() { 
     top = next(10,99);
     bottom = next(1,10);
-    activeIndex = int.parse(widget.gameSettings["difficulty"]);
+    activeIndex = type[widget.gameSettings["header"]];
     _operator = operators[activeIndex];
-
 
     answer[0] = top + bottom;
     answer[1] = top - bottom;
