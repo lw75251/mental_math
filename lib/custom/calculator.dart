@@ -15,10 +15,11 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
-  final int input = 0;
   final Random _random = Random();
-  final bool generateQuestion = true;
   
+  // Difficulty level
+
+
   Map<String,int> type = {
     "Add": 0,
     "Subtract": 1,
@@ -27,8 +28,10 @@ class _CalculatorState extends State<Calculator> {
     "Custom" : 4,
   };
 
-
+  // Question Related Variables
   int activeIndex;
+  int difficulty;
+
   int top;
   int bottom;
   List<int> answer = new List(4);
@@ -36,6 +39,22 @@ class _CalculatorState extends State<Calculator> {
 
   String display = "";
   String _operator;
+
+  void newQuestion() {
+    if ( difficulty == 0 ) {
+      top = next(1,10);
+      bottom = next(1,10);
+    }
+    else if (difficulty == 1 ) {
+      top = next(10,99);
+      bottom = next(1,99);
+    }
+    else {
+      top = next(100,999);
+      bottom = next(10,999);
+    }
+    updateAnswers();
+  }
 
   void updateAnswers() {
     answer[0] = top + bottom;
@@ -45,24 +64,18 @@ class _CalculatorState extends State<Calculator> {
   }
   
   @override
-  void initState() { 
-    top = next(10,99);
-    bottom = next(1,10);
+  void initState() {
+    difficulty = int.parse(widget.gameSettings["difficulty"]);
+    newQuestion();
+    updateAnswers();
     activeIndex = type[widget.gameSettings["header"]];
     _operator = operators[activeIndex];
-
-    answer[0] = top + bottom;
-    answer[1] = top - bottom;
-    answer[2] = top * bottom;
-    answer[3] = top ~/ bottom;
 
     super.initState();
   }
 
   /// Generates a number between the min and max range
   int next(int min, int max) => min + _random.nextInt(max - min);
-
-  String get val => input.toString();
 
   Widget _buildDisplay(){
     TextStyle style = TextStyle(
@@ -105,6 +118,7 @@ class _CalculatorState extends State<Calculator> {
 
   @override
   Widget build(BuildContext context) {
+    print(difficulty);
     final stats = Provider.of<GameStats>(context); 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -157,6 +171,8 @@ class _CalculatorState extends State<Calculator> {
                   // Wrong UI
                   print("wrong");
                 }
+                display = "";
+                newQuestion();
               },
             )        
           ])

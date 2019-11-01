@@ -35,7 +35,7 @@ class _GameScreenState extends State<GameScreen> {
     // final stats = Provider.of<GameStats>(context);
     return  Consumer<GameStats>(
       builder: (context, stats, _ ) => Stack( children: <Widget>[
-          Align(alignment: FractionalOffset(1.13,-.06),
+          Align(alignment: FractionalOffset(1.1,-.06),
             child: Container(height: height, width: width,
               child: AspectRatio(aspectRatio: 1,
                 child: CountDown(),

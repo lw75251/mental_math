@@ -27,7 +27,7 @@ Handler optionsHandler = Handler(
 Handler gameHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, dynamic> params) {
 
-    // Map Data: header, type, difficulty
+    // Map Data: header, difficulty
     Map data = FluroUtils.paramsToMap(gameRoute, params);
     return GameScreen(data);
   });  
