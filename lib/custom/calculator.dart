@@ -31,6 +31,7 @@ class _CalculatorState extends State<Calculator> {
   // Question Related Variables
   int activeIndex;
   int difficulty;
+  String header;
 
   int top;
   int bottom;
@@ -51,6 +52,7 @@ class _CalculatorState extends State<Calculator> {
       newDivideQuestion();
     else {
       activeIndex = next(0,3);
+      _operator = operators[activeIndex];
       if ( activeIndex == 0 ) 
         newAddQuestion();
       else if ( activeIndex == 1 )
@@ -133,11 +135,14 @@ class _CalculatorState extends State<Calculator> {
   
   @override
   void initState() {
+    header = widget.gameSettings["header"];
     difficulty = int.parse(widget.gameSettings["difficulty"]);
-    updateAnswers();
-    activeIndex = type[widget.gameSettings["header"]];
-    _operator = operators[activeIndex];
+    activeIndex = type[header];
 
+    if (activeIndex != 4 )
+      _operator = operators[activeIndex];
+
+    newQuestion(header);
     super.initState();
   }
 
@@ -238,7 +243,7 @@ class _CalculatorState extends State<Calculator> {
                   print("wrong");
                 }
                 display = "";
-                newQuestion();
+                newQuestion(header);
               },
             )        
           ])
