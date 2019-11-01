@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mental_math/custom/destination_title.dart';
 import 'package:mental_math/routes/router.dart';
+import 'package:navigation_dot_bar/navigation_dot_bar.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -158,11 +159,25 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
         backgroundColor: Color(0XFFF2F7FB),
         elevation: 0.5,
         leading: _buildIcon(AnimatedIcons.menu_home, context),
-        actions: <Widget>[
-          _buildIcon(Icons.search, context)
-        ],
+        // actions: <Widget>[
+        //   _buildIcon(Icons.search, context)
+        // ],
       ),
-
+      bottomNavigationBar: BottomNavigationDotBar(
+        items: [
+          BottomNavigationDotBarItem(
+            icon: FontAwesomeIcons.brain,
+            onTap: () {}
+          ),
+          BottomNavigationDotBarItem(
+            icon: FontAwesomeIcons.chartBar,
+            onTap: () {}
+          ),
+          BottomNavigationDotBarItem(
+            icon: FontAwesomeIcons.user,
+            onTap: () {}
+          ),
+        ]),
       body: Column(
         children: <Widget>[
           Padding(
@@ -197,7 +212,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
-              height: maxHeight - 141.0,
+              height: maxHeight - 211.0,
               width: maxWidth,
               child: ListView.separated(
                 itemCount: options.length,

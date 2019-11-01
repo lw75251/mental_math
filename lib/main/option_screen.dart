@@ -252,9 +252,9 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
           backgroundColor: Color(0XFFF2F7FB),
           elevation: 0.5,
           leading: _buildIcon(Icons.home, context),
-          actions: <Widget>[
-            _buildIcon(Icons.search, context)
-          ],
+          // actions: <Widget>[
+          //   _buildIcon(Icons.search, context)
+          // ],
         ),
 
         body: Stack(children: <Widget>[

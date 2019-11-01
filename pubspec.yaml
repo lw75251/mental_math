@@ -20,13 +20,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  navigation_dot_bar: ^0.1.3
   provider: ^3.1.0
   fluro: "^1.5.1"
   flutter_page_indicator:
   fluttertoast: ^3.1.3
-  sliding_up_panel: ^0.3.5
-  fab_circular_menu: ^0.1.1
-  flutter_swiper:
 
 
   # The following adds the Cupertino Icons font to your application.
