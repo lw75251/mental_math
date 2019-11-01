@@ -40,7 +40,31 @@ class _CalculatorState extends State<Calculator> {
   String display = "";
   String _operator;
 
-  void newQuestion() {
+  void newQuestion(String header ) {
+    if (header == "Add" ) 
+      newAddQuestion();
+    else if ( header == "Subtract" ) 
+      newSubtractQuestion();
+    else if ( header == "Multiply" )
+      newMultiplyQuestion();
+    else if ( header == "Divide" )
+      newDivideQuestion();
+    else {
+      activeIndex = next(0,3);
+      if ( activeIndex == 0 ) 
+        newAddQuestion();
+      else if ( activeIndex == 1 )
+        newSubtractQuestion();
+      else if ( activeIndex == 2 )
+        newMultiplyQuestion();
+      else
+        newDivideQuestion();
+    }
+
+    updateAnswers();
+  }
+
+  void newAddQuestion() {
     if ( difficulty == 0 ) {
       top = next(1,10);
       bottom = next(1,10);
@@ -53,8 +77,52 @@ class _CalculatorState extends State<Calculator> {
       top = next(100,999);
       bottom = next(10,999);
     }
-    updateAnswers();
   }
+
+  void newSubtractQuestion() {
+    if ( difficulty == 0 ) {
+      top = next(1,10);
+      bottom = next(1,top);
+    }
+    else if (difficulty == 1 ) {
+      top = next(10,99);
+      bottom = next(1,top);
+    }
+    else {
+      top = next(100,999);
+      bottom = next(10,top);
+    }
+  }
+
+  void newMultiplyQuestion() {
+    if ( difficulty == 0 ) {
+      top = next(1,10);
+      bottom = next(1,10);
+    }
+    else if (difficulty == 1 ) {
+      top = next(10,99);
+      bottom = next(1,10);
+    }
+    else {
+      top = next(10,99);
+      bottom = next(10,99);
+    }
+  } 
+
+  void newDivideQuestion() {
+    if ( difficulty == 0 ) {
+      top = next(1,10);
+      bottom = next(1,10);
+    }
+    else if (difficulty == 1 ) {
+      top = next(10,99);
+      bottom = next(1,10);
+    }
+    else {
+      top = next(10,99);
+      bottom = next(10,99);
+    }
+  } 
 
   void updateAnswers() {
     answer[0] = top + bottom;
@@ -66,7 +134,6 @@ class _CalculatorState extends State<Calculator> {
   @override
   void initState() {
     difficulty = int.parse(widget.gameSettings["difficulty"]);
-    newQuestion();
     updateAnswers();
     activeIndex = type[widget.gameSettings["header"]];
     _operator = operators[activeIndex];
@@ -118,7 +185,6 @@ class _CalculatorState extends State<Calculator> {
 
   @override
   Widget build(BuildContext context) {
-    print(difficulty);
     final stats = Provider.of<GameStats>(context); 
     return Container(
       width: MediaQuery.of(context).size.width,
