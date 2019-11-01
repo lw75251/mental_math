@@ -251,7 +251,7 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
         appBar: AppBar(
           backgroundColor: Color(0XFFF2F7FB),
           elevation: 0.5,
-          leading: _buildIcon(Icons.list, context),
+          leading: _buildIcon(Icons.home, context),
           actions: <Widget>[
             _buildIcon(Icons.search, context)
           ],
