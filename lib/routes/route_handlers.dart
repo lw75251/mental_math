@@ -1,17 +1,18 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_math/main/game_screen.dart';
+import 'package:mental_math/main/login_screen.dart';
 import 'package:mental_math/main/main_screen.dart';
 import 'package:mental_math/main/option_screen.dart';
 import 'package:mental_math/routes/router.dart';
 import 'package:mental_math/utils/fluro.dart';
 
-Handler welcomeHandler = Handler(
+Handler loginHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return Container();
+    return LoginPage();
   });
 
-Handler mainHandler = Handler(
+Handler homeHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return MainScreen();
   });
