@@ -158,10 +158,30 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
       appBar: AppBar(
         backgroundColor: Color(0XFFF2F7FB),
         elevation: 0.5,
-        leading: _buildIcon(AnimatedIcons.menu_home, context),
+        iconTheme: IconThemeData(color: Colors.black),
+        // leading: _buildIcon(AnimatedIcons.menu_home, context),
         // actions: <Widget>[
         //   _buildIcon(Icons.search, context)
         // ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader( child: Text('Profile'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+            ),
+            ListTile( title: Text('Item 1'),
+              onTap: () { Navigator.pop(context); },
+            ),
+            ListTile( title: Text('Item 2'),
+              onTap: () { Navigator.pop(context); },
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationDotBar(
         items: [

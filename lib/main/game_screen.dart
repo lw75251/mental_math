@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mental_math/custom/calculator.dart';
+import 'package:mental_math/custom/circle_header.dart';
 import 'package:mental_math/custom/game_stats.dart';
 import 'package:mental_math/custom/timer.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ class _GameScreenState extends State<GameScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: _iconPadding-1.2),
       child: GestureDetector(
-        child: Icon(_icon, color: Colors.black, size: _iconSize),
+        child: Icon(_icon, color: Colors.white, size: _iconSize),
         onTap: (){
           Navigator.of(context).pop(true);
           return Future.value(false);          
@@ -70,19 +71,58 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.gameSettings["header"], 
-                style: TextStyle(color: Colors.black),),
-        backgroundColor: Color(0XFFF2F7FB),
-        elevation: 0.5,
+        // centerTitle: true,
+        // title: Text(widget.gameSettings["header"], 
+        //         style: TextStyle(color: Colors.white),),
+        backgroundColor: Color(0XFFc59e9f),
+        elevation: 0,
         leading: _buildIcon(Icons.arrow_back, context),
       ),
-      body: ChangeNotifierProvider(
-        builder: (context) => GameStats(),
-        child: Column(children: <Widget>[
-          _buildGameInfo(),
-          Calculator(widget.gameSettings)
-          // Calculator(widget.gameSettings)
-        ]),
+
+        // ChangeNotifierProvider(  
+        //   builder: (context) => GameStats(),
+        //   child: Container(
+        //     decoration: BoxDecoration(
+        //       gradient: LinearGradient(
+        //         begin: Alignment.topCenter,
+        //         end: Alignment.bottomCenter,
+        //         colors: [Color(0xFF5E6680),Color(0xFF3B4356)]
+        //       )
+        //     ),
+        //     child: Column(children: <Widget>[
+        //       _buildGameInfo(),
+        //       Calculator(widget.gameSettings)
+        //       // Calculator(widget.gameSettings)
+        //     ]),
+        //   ),
+        // ),
+
+      body: ChangeNotifierProvider(  
+          builder: (context) => GameStats(),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFF5E6680),Color(0xFF3B4356)]
+              )
+            ),
+            child: Column(children: <Widget>[
+              Stack(children: <Widget>[
+                HalfCircle(
+                  child: Container( 
+                    height: MediaQuery.of(context).size.height/6.5,
+                    width: MediaQuery.of(context).size.width,
+                    // color: Colors.blue,)
+                    color: Color(0xFFC59E9F),
+                  ),
+                ),
+                _buildGameInfo()
+              ]),
+
+              Calculator(widget.gameSettings)
+            ]),
+          )
       )
     );
   }

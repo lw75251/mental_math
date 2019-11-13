@@ -153,7 +153,7 @@ class _CalculatorState extends State<Calculator> {
     TextStyle style = TextStyle(
       fontSize: 40,
       letterSpacing: 10,
-      color: Colors.black,
+      color: Colors.white,
     );
     return Container(
       child: Column(
@@ -174,16 +174,41 @@ class _CalculatorState extends State<Calculator> {
   }
 
   Widget _buildTile(int i) {
-    return SizedBox(
-      width: 100,
-      height: 50,
-      child: MaterialButton(
-        child: Text(i.toString()),
-        color: Colors.blueAccent,
-        onPressed: (){
-          display += i.toString();
-          setState(() {});
-        },
+    return Expanded(
+      child: OutlineButton(
+        borderSide: BorderSide(color: Colors.white, width: 1.0),
+        child: Container(
+          height: 70,
+          child: Center(
+            child: Text(i.toString(), 
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w600
+              )),
+          ),
+        ),
+        onPressed: (){},
+      ),
+    );
+  }
+
+  Widget _buildActionButton(String str) {
+    return Expanded(
+      child: OutlineButton(
+        borderSide: BorderSide(color: Colors.white, width: 1.0),
+        child: Container(
+          height: 70,
+          child: Center(
+            child: Text(str, 
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w600
+              )),
+          ),
+        ),
+        onPressed: (){},
       ),
     );
   }
@@ -191,9 +216,9 @@ class _CalculatorState extends State<Calculator> {
   @override
   Widget build(BuildContext context) {
     final stats = Provider.of<GameStats>(context); 
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height/2,
+    return Expanded(
+      // width: MediaQuery.of(context).size.width,
+      // height: MediaQuery.of(context).size.height/2,
       child: Column(
         children: <Widget>[
           Row(mainAxisAlignment: MainAxisAlignment.center,
@@ -220,32 +245,27 @@ class _CalculatorState extends State<Calculator> {
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-            MaterialButton(
-              child: Text("Clear"),
-              onPressed: (){
-                display = "";
-                setState(() {});
-              },
-            ),
+_buildActionButton("AC"),
             _buildTile(0),
-            MaterialButton(
-              child: Text("Submit"),
-              onPressed: (){
+            _buildActionButton("Submit")
+            // MaterialButton(
+            //   child: Text("Submit"),
+            //   onPressed: (){
 
-                bool outcome = int.parse(display) == answer[activeIndex];
-                stats.stats = outcome;
+            //     bool outcome = int.parse(display) == answer[activeIndex];
+            //     stats.stats = outcome;
 
-                if( outcome ){
-                  // Correct UI
-                  print("correct");
-                } else {
-                  // Wrong UI
-                  print("wrong");
-                }
-                display = "";
-                newQuestion(header);
-              },
-            )        
+            //     if( outcome ){
+            //       // Correct UI
+            //       print("correct");
+            //     } else {
+            //       // Wrong UI
+            //       print("wrong");
+            //     }
+            //     display = "";
+            //     newQuestion(header);
+            //   },
+            // )        
           ])
         ],
       ),
