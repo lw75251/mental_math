@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class GameStats with ChangeNotifier {
   int _correct = 0;
-  int _score = 0;
   int _total = 0;
 
   GameStats();
 
   int get correct => _correct;
-  int get score => _score;
+  int get score => _correct*2;
   int get total => _total;
+  int get wrong => _total-_correct;
 
 
   // Outcome can either be true if the question was answered correctly
@@ -18,7 +18,6 @@ class GameStats with ChangeNotifier {
     
     if ( outcome ) {
       _correct++;
-      _score += 2;
     } 
 
     _total++;

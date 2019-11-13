@@ -61,7 +61,7 @@ class _CountDownState extends State<CountDown> with TickerProviderStateMixin{
               AnimatedBuilder(animation: controller,
                 builder: (context, child) {
                   return new Text(timerString,
-                    style: TextStyle(fontSize: 25),
+                    style: TextStyle(fontSize: 20),
                   );
                 },
               )
@@ -96,7 +96,7 @@ class TimerPainter extends CustomPainter {
     paint.color = color;
 
     double progress = (1.0 - animation.value) * 2 * pi;
-    canvas.drawArc(Offset(44,44) & size/2, pi * 1.5, -progress, false, paint);
+    canvas.drawArc(Offset(31,31) & size/2, pi * 1.5, -progress, false, paint);
   }
 
   @override

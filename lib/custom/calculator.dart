@@ -1,7 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:mental_math/custom/game_stats.dart';
+import 'package:mental_math/models/game_stats.dart';
+
 import 'package:provider/provider.dart';
 
 class Calculator extends StatefulWidget {
@@ -193,7 +194,7 @@ class _CalculatorState extends State<Calculator> {
     );
   }
 
-  Widget _buildActionButton(String str) {
+  Widget _buildActionButton(String str, ) {
     return Expanded(
       child: OutlineButton(
         borderSide: BorderSide(color: Colors.white, width: 1.0),
@@ -245,7 +246,7 @@ class _CalculatorState extends State<Calculator> {
           ]),
           Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-_buildActionButton("AC"),
+            _buildActionButton("AC"),
             _buildTile(0),
             _buildActionButton("Submit")
             // MaterialButton(
