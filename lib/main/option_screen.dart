@@ -55,16 +55,13 @@ class _OptionScreenState extends State<OptionScreen> with SingleTickerProviderSt
   };
 
   Widget _buildIcon( IconData _icon, BuildContext _context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: _iconPadding-1.2),
-      child: GestureDetector(
+    return GestureDetector(
         child: Icon(_icon, color: Colors.black, size: _iconSize),
         onTap: (){
           _ac.reverse();
           Navigator.of(context).pop(true);
           return Future.value(false);          
-        })
-    );
+        });
   }
 
   Widget _buildLayout() {

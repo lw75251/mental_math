@@ -194,7 +194,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
             onTap: () {}
           ),
           BottomNavigationDotBarItem(
-            icon: FontAwesomeIcons.user,
+            icon: FontAwesomeIcons.clipboardList,
             onTap: () {}
           ),
         ]),

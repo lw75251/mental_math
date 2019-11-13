@@ -36,7 +36,10 @@ class _GameScreenState extends State<GameScreen> {
     final infoStyle = TextStyle(color: Colors.white, fontSize: 18);
     final scoreStyle = TextStyle(color: Colors.white, fontSize: 30);
     return  Consumer<GameStats>(
-      builder: (context, stats, _ ) => Stack( children: <Widget>[
+      builder: (context, stats, _ ) => 
+      Container(width: MediaQuery.of(context).size.width,
+      height: 200,
+        child:Stack( children: <Widget>[
           Align(alignment: FractionalOffset(1.05,0),
             child: Container(height: height, width: width,
               child: AspectRatio(aspectRatio: 1,
@@ -45,21 +48,27 @@ class _GameScreenState extends State<GameScreen> {
             )
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 90, top: 43),
-            child: Row(
-              children: <Widget>[
-                Text("Correct: ${stats.correct}", style: infoStyle,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                  child: Text("Wrong: ${stats.wrong}", style: infoStyle,),
-                ),
-              ]),
+            padding: const EdgeInsets.only(left: 0, top: 40),
+            child: Container(
+              child: Row(
+                children: <Widget>[
+                  _buildIcon(Icons.arrow_back, context),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40.0),
+                    child: Text("Correct: ${stats.correct}", style: infoStyle,),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                    child: Text("Wrong: ${stats.wrong}", style: infoStyle,),
+                  ),
+                ]),
+            ),
           ),
-          Align(alignment: FractionalOffset(0.5, 0.15),
+          Align(alignment: FractionalOffset(0.5, .6),
               child: Text("Score: ${stats.score}", style: scoreStyle),
           )
       ]),
-    );
+    ));
   }
 
   @override
@@ -69,12 +78,9 @@ class _GameScreenState extends State<GameScreen> {
       child: Stack(children: <Widget>[
         Scaffold(
           appBar: AppBar(
-            // centerTitle: true,
-            // title: Text(widget.gameSettings["header"], 
-            //         style: TextStyle(color: Colors.white),),
+            automaticallyImplyLeading: false,
             backgroundColor: Color(0XFFc59e9f),
             elevation: 0,
-            leading: _buildIcon(Icons.arrow_back, context),
           ),
           body: 
           // ChangeNotifierProvider(  
@@ -88,16 +94,16 @@ class _GameScreenState extends State<GameScreen> {
                     colors: [Color(0xFF5E6680),Color(0xFF3B4356)]
                   )
                 ),
-                child: Column(children: <Widget>[
-                  Stack(children: <Widget>[
-                    HalfCircle(
-                      child: Container( 
-                        height: MediaQuery.of(context).size.height/6.5,
-                        width: MediaQuery.of(context).size.width,
-                        // color: Colors.blue,)
-                        color: Color(0xFFC59E9F),
+                child: Column( children: <Widget>[
+                    Stack(children: <Widget>[
+                      HalfCircle(
+                        child: Container( 
+                          height: MediaQuery.of(context).size.height/6.5,
+                          width: MediaQuery.of(context).size.width,
+                          // color: Colors.blue,)
+                          color: Color(0xFFC59E9F),
+                        ),
                       ),
-                    ),
                   ]),
                   Calculator(widget.gameSettings)
                 ]),

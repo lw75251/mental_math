@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mental_math/models/user.dart';
 import 'package:mental_math/routes/router.dart';
 
 
@@ -63,7 +64,9 @@ class _LoginPageState extends State<LoginPage> {
         'Create Account',
         style: TextStyle(color: Colors.black54),
       ),
-      onPressed: () {},
+      onPressed: () {
+        User.postUser(email.toString(),password.toString());
+      },
     );
 
     final forgotLabel = FlatButton(

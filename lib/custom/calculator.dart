@@ -42,6 +42,10 @@ class _CalculatorState extends State<Calculator> {
   String display = "";
   String _operator;
 
+  bool checkAnswer() {
+    return int.parse(display) == answer[activeIndex];
+  }
+
   void newQuestion(String header ) {
     if (header == "Add" ) 
       newAddQuestion();
@@ -189,12 +193,16 @@ class _CalculatorState extends State<Calculator> {
               )),
           ),
         ),
-        onPressed: (){},
+        onPressed: (){
+          setState(() {
+            display += i.toString();
+          });
+        },
       ),
     );
   }
 
-  Widget _buildActionButton(String str, ) {
+  Widget _buildActionButton(String str) {
     return Expanded(
       child: OutlineButton(
         borderSide: BorderSide(color: Colors.white, width: 1.0),
@@ -209,7 +217,15 @@ class _CalculatorState extends State<Calculator> {
               )),
           ),
         ),
-        onPressed: (){},
+        onPressed: str == "AC" ? (){
+          setState(() { display = "";});
+        } : (){
+          if ( checkAnswer() ) {
+            print('true');
+          } else {
+            print('false');
+          }
+        }
       ),
     );
   }
@@ -222,10 +238,13 @@ class _CalculatorState extends State<Calculator> {
       // height: MediaQuery.of(context).size.height/2,
       child: Column(
         children: <Widget>[
-          Row(mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-            _buildDisplay(),
-          ]),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+              _buildDisplay(),
+            ]),
+          ),
           Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
             _buildTile(1),
