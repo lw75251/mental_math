@@ -51,8 +51,10 @@ class User {
       body: body
     );
 
-    if ( response.statusCode == 200 ) {
-      print("made user");
+    print(response.statusCode);
+    print(json.decode(response.body));
+
+    if ( response.statusCode == 201 ) {
       return User.fromJson(json.decode(response.body));
     } else {
       throw Exception("Failed to load User");

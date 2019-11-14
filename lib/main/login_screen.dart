@@ -10,6 +10,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  User user;
+
+
   @override
   Widget build(BuildContext context) {
     final logo = Hero(
@@ -64,8 +67,9 @@ class _LoginPageState extends State<LoginPage> {
         'Create Account',
         style: TextStyle(color: Colors.black54),
       ),
-      onPressed: () {
-        User.postUser(email.toString(),password.toString());
+      onPressed: () async {
+        user = await User.postUser(email.toString(),password.toString());
+        print(user);
       },
     );
 
